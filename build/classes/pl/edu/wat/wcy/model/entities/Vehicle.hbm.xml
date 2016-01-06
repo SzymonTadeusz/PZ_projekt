@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+"http://www.hibernate.org/dtd/hibernate-mapping">
 <!-- Generated 2016-01-06 19:22:53 by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
     <class name="pl.edu.wat.wcy.model.entities.Vehicle" table="VEHICLE" abstract="true">
@@ -12,8 +12,8 @@
         <property name="capacity" type="int">
             <column name="CAPACITY" />
         </property>
-        <one-to-one name="currentDriver" class="pl.edu.wat.wcy.model.entities.Driver"></one-to-one>
-        <set name="currentCargo" table="CARGO" inverse="true" lazy="true">
+        <one-to-one name="currentDriver" class="pl.edu.wat.wcy.model.entities.Driver" cascade="all"></one-to-one>
+        <set name="currentCargo" table="CARGO" inverse="true" lazy="false" cascade="all">
             <key>
                 <column name="cargoID" />
             </key>
@@ -35,7 +35,7 @@
         	</property>
   		</union-subclass>  
   		
-  		<union-subclass name="pl.edu.wat.wcy.model.entities.Airplane" table="TRUCK">  
+  		<union-subclass name="pl.edu.wat.wcy.model.entities.Airplane" table="AIRPLANE">  
             <property name="name" type="java.lang.String">
             	<column name="NAME" />
         	</property>

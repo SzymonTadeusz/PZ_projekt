@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+"http://www.hibernate.org/dtd/hibernate-mapping">
 <!-- Generated 2016-01-06 19:22:53 by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
     <class name="pl.edu.wat.wcy.model.entities.EventLog" table="EVENTLOG">
@@ -8,7 +8,7 @@
             <column name="ID" />
             <generator class="increment" />
         </id>
-        <set name="events" table="EVENTS" inverse="false" lazy="true" access="field">
+        <set name="events" table="EVENTS" inverse="false" lazy="false" cascade="all" access="field">
             <key>
                 <column name="event_id" />
             </key>

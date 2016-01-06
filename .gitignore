@@ -4,6 +4,7 @@ ehthumbs.db
 
 .project
 build
+.class
 
 # Folder config file
 Desktop.ini

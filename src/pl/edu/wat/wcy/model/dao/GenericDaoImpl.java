@@ -1,9 +1,5 @@
 package pl.edu.wat.wcy.model.dao;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
 public class GenericDaoImpl<T> implements GenericDao<T> {
 
 	Class<T> type;
@@ -23,13 +19,17 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
 
 	@Override
 	public T create(T t) {
+		EMStorage.getEm().getTransaction().begin();
 		EMStorage.getEm().persist(t);
+		EMStorage.getEm().getTransaction().commit();
 		return t;
 	}
 
 	@Override
 	public void delete(Object id) {
+		EMStorage.getEm().getTransaction().begin();
 		EMStorage.getEm().remove(EMStorage.getEm().getReference(type, id));
+		EMStorage.getEm().getTransaction().commit();
 	}
 
 	@Override
@@ -39,8 +39,10 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
 
 	@Override
 	public T update(T t) {
+		EMStorage.getEm().getTransaction().begin();
 		EMStorage.getEm().merge(t);
-		return t;
+		EMStorage.getEm().getTransaction().commit();
+			return t;
 	}
 
 }

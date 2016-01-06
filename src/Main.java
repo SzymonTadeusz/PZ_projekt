@@ -1,3 +1,4 @@
+
 import org.hibernate.HibernateException;
 
 import pl.edu.wat.wcy.model.dao.EMStorage;
@@ -20,6 +21,7 @@ public class Main {
 		Vehicle obj = pojazdDao.retrieve(sam.getVehicleID());
 		System.out.println(obj2);
 		System.out.println(obj);
+		
 		
 		try {
 			EMStorage.getEm().close();
