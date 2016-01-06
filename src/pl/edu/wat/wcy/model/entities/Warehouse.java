@@ -12,6 +12,13 @@ public class Warehouse {
 	private int yCoord;
 	private HashSet<Transport> awaitingTransport;
 	
+	@Override
+	public String toString()
+	{
+		return ("Nazwa: "+this.warehouseName + ", " + this.street + "/" 
+				+ this.streetNumber + " (" + this.xCoord + ", " + this.yCoord + ")");
+	}
+	
 	public Warehouse(){}
 	
 	public Warehouse(String street, int streetNr, String wName, int x, int y)

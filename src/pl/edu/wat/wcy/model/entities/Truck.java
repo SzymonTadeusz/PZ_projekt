@@ -25,7 +25,7 @@ public class Truck extends Vehicle {
 	@Override
 	public String toString()
 	{
-		return ("Nr rejestracyjny: "+this.regNumber+", sprawny: "+this.isAbleToWork);
+		return (super.toString() + ", TIR - Nr rejestracyjny: "+this.regNumber+", sprawny: "+this.isAbleToWork);
 	}
 	
 	public String getRegNumber() {

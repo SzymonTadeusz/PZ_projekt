@@ -14,7 +14,15 @@ public class CurrentTransportsList {
 		this.setTransports(t);
 	}
 	
-	
+	@Override
+	public String toString()
+	{
+		String trans=null;
+		if(transports != null)
+			for(Transport t : transports)
+				trans+=t.toString();
+		return trans;
+	}
 	
 	public int getCurrentTransportsListID() {
 		return currentTransportsListID;

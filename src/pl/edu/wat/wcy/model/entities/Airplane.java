@@ -16,6 +16,13 @@ public class Airplane extends Vehicle {
 		super(capacity,x,y);
 		this.setName(name);
 	}
+	
+	@Override
+	public String toString()
+	{
+		return (super.toString() + ", SAMOLOT - nazwa: " + this.name);
+	}
+	
 	public String getName() {
 		return name;
 	}

@@ -26,7 +26,9 @@ public abstract class Vehicle implements Serializable {
 	public String toString()
 	{
 		String cargo=null;
-		for(Cargo c: currentCargo)cargo+=c;
+		if(currentCargo!=null)
+			for(Cargo c: currentCargo)
+				cargo+=c;
 		return ("Pojazd "+this.vehicleID+", pojemnosc: "+this.capacity+", kierowca: "+this.currentDriver+". Przewozi: "+cargo);
 	}
 
