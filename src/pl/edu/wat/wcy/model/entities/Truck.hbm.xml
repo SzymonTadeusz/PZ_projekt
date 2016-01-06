@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-01-06 19:22:53 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <subclass name="pl.edu.wat.wcy.model.entities.Truck" extends="pl.edu.wat.wcy.model.entities.Vehicle" discriminator-value="Truck" lazy="false">
+        <property name="regNumber" type="java.lang.String">
+            <column name="REGNUMBER" />
+        </property>
+        <property name="isAbleToWork" type="boolean" access="field">
+            <column name="ISABLETOWORK" />
+        </property>
+    </subclass>
+</hibernate-mapping>

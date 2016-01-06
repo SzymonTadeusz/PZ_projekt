@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2016-01-06 19:22:53 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="pl.edu.wat.wcy.model.entities.Driver" table="DRIVER">
+        <id name="driverID" type="int" access="field">
+            <column name="ID" />
+            <generator class="increment" />
+        </id>
+        <property name="firstName" type="java.lang.String" access="field">
+            <column name="FIRSTNAME" />
+        </property>
+        <property name="surname" type="java.lang.String" access="field">
+            <column name="SURNAME" />
+        </property>
+        <property name="idNumber" type="java.lang.String" access="field">
+            <column name="IDNUMBER" />
+        </property>
+        <property name="licenseNumber" type="java.lang.String" access="field">
+            <column name="LICENSENUMBER" />
+        </property>
+    </class>
+</hibernate-mapping>
