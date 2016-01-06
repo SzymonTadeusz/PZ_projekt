@@ -1,19 +1,25 @@
 package pl.edu.wat.wcy.model.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-
+@SuppressWarnings("serial")
 public class Truck extends Vehicle {
+	
 	private String regNumber;
 	private boolean isAbleToWork;
+	
 	public Truck()
 	{
 		
 	}
 	public Truck(String regNr, boolean able)
 	{
-		this.regNumber=regNr;
-		this.isAbleToWork = able;
+		this.setRegNumber(regNr);
+		this.setAbleToWork(able);
+	}
+	public Truck(String regNr, boolean able, int capacity, int x, int y)
+	{
+		super(capacity,x,y);
+		this.setRegNumber(regNr);
+		this.setAbleToWork(able);
 	}
 	
 	@Override

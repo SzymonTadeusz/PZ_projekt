@@ -1,12 +1,24 @@
 package pl.edu.wat.wcy.model.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import java.util.HashSet;
 
 public class EventLog {
 
 	private int eventLogID;
+	private HashSet<String> events;
+	
+	
+	public int getEventLogID() {
+		return eventLogID;
+	}
+	public void setEventLogID(int eventLogID) {
+		this.eventLogID = eventLogID;
+	}
+	public HashSet<String> getEvents() {
+		return events;
+	}
+	public void setEvents(HashSet<String> events) {
+		this.events = events;
+	} 
 	
 }

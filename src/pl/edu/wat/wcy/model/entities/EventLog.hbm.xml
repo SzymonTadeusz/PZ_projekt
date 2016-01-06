@@ -8,5 +8,11 @@
             <column name="ID" />
             <generator class="increment" />
         </id>
+        <set name="events" table="EVENTS" inverse="false" lazy="true" access="field">
+            <key>
+                <column name="event_id" />
+            </key>
+                <element type="text"/>
+        </set>
     </class>
 </hibernate-mapping>

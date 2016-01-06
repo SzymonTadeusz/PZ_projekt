@@ -21,5 +21,11 @@
             </key>
             <one-to-many class="pl.edu.wat.wcy.model.entities.Cargo" />
         </set>
+        <property name="xCoord" type="int">
+            <column name="XCOORD" />
+        </property>
+        <property name="yCoord" type="int">
+            <column name="YCOORD" />
+        </property>
     </class>
 </hibernate-mapping>

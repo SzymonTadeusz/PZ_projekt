@@ -3,13 +3,6 @@ package pl.edu.wat.wcy.model.entities;
 import java.io.Serializable;
 import java.util.HashSet;
 
-import javax.persistence.*;
-import javax.persistence.MappedSuperclass;
-
-/**
- * Entity implementation class for Entity: A
- *
- */
 public abstract class Vehicle implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int vehicleID;
@@ -23,8 +16,10 @@ public abstract class Vehicle implements Serializable {
 		super();
 	}
 
-	public Vehicle(int capacity) {
-		this.capacity = capacity;
+	public Vehicle(int capacity, int x, int y) {
+		this.setCapacity(capacity);
+		this.setxCoord(x);
+		this.setyCoord(y);
 	}
 
 	@Override

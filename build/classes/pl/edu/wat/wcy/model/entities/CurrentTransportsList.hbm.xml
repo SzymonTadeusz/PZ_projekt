@@ -8,7 +8,7 @@
             <column name="ID" />
             <generator class="increment" />
         </id>
-        <set name="transports" table="TRANSPORT" inverse="false" lazy="true" access="field">
+        <set name="transports" table="CURRTRANSPORTS" inverse="false" lazy="true" access="field">
             <key>
                 <column name="transportID" />
             </key>

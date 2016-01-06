@@ -8,5 +8,7 @@
             <column name="ID" />
             <generator class="increment" />
         </id>
+        <many-to-one name="destination" class="pl.edu.wat.wcy.model.entities.Warehouse"></many-to-one>
+        
     </class>
 </hibernate-mapping>

@@ -1,7 +1,6 @@
 import org.hibernate.HibernateException;
 
 import pl.edu.wat.wcy.model.dao.EMStorage;
-import pl.edu.wat.wcy.model.dao.GenericDao;
 import pl.edu.wat.wcy.model.dao.PojazdDao;
 import pl.edu.wat.wcy.model.entities.*;
 

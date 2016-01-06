@@ -8,5 +8,11 @@
             <column name="ID" />
             <generator class="increment" />
         </id>
+        <set name="transportHistory" table="TRANSPORTHISTORY" inverse="false" lazy="true" access="field">
+            <key>
+                <column name="transportID" />
+            </key>
+            <one-to-many class="pl.edu.wat.wcy.model.entities.Transport" />
+        </set>
     </class>
 </hibernate-mapping>
