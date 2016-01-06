@@ -1,5 +1,6 @@
 import org.hibernate.HibernateException;
 
+import pl.edu.wat.wcy.model.dao.EMStorage;
 import pl.edu.wat.wcy.model.dao.GenericDao;
 import pl.edu.wat.wcy.model.dao.PojazdDao;
 import pl.edu.wat.wcy.model.entities.*;
@@ -22,8 +23,8 @@ public class Main {
 		System.out.println(obj.getCapacity());
 		
 		try {
-			pojazdDao.getEm().close();
-			pojazdDao.getEmf().close();
+			EMStorage.getEm().close();
+			EMStorage.getEmf().close();
 		} catch (HibernateException e1) {
 			System.out.println("Blad Hibernate'a!");
 		}

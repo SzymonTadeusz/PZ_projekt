@@ -8,17 +8,6 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
 
 	Class<T> type;
 	
-	EntityManagerFactory emf = Persistence.createEntityManagerFactory("PZ_projekt");
-	public EntityManagerFactory getEmf() {
-		return emf;
-	}
-
-	public EntityManager getEm() {
-		return em;
-	}
-
-	EntityManager em;
-	
 //	public GenericDaoImpl() {
 //		super();
 //		em.isOpen();
@@ -29,29 +18,28 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
 
 	public GenericDaoImpl(Class<T> type) {
 		super();
-		em = emf.createEntityManager();
 		this.type = type;
 	}
 
 	@Override
 	public T create(T t) {
-		em.persist(t);
+		EMStorage.getEm().persist(t);
 		return t;
 	}
 
 	@Override
 	public void delete(Object id) {
-		em.remove(em.getReference(type, id));
+		EMStorage.getEm().remove(EMStorage.getEm().getReference(type, id));
 	}
 
 	@Override
 	public T retrieve(Object id) {
-		return em.find(type, id);
+		return EMStorage.getEm().find(type, id);
 	}
 
 	@Override
 	public T update(T t) {
-		em.merge(t);
+		EMStorage.getEm().merge(t);
 		return t;
 	}
 

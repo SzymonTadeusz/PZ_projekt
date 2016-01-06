@@ -10,6 +10,18 @@ public class Truck extends Vehicle {
 	{
 		
 	}
+	public Truck(String regNr, boolean able)
+	{
+		this.regNumber=regNr;
+		this.isAbleToWork = able;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return ("Nr rejestracyjny: "+this.regNumber+", sprawny: "+this.isAbleToWork);
+	}
+	
 	public String getRegNumber() {
 		return regNumber;
 	}
