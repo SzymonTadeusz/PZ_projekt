@@ -8,9 +8,7 @@
             <column name="ID" />
             <generator class="increment" />
         </id>
-        <discriminator type="string">
-            <column name="DISCR_COL" />
-        </discriminator>
+        
         <property name="capacity" type="int">
             <column name="CAPACITY" />
         </property>
@@ -27,5 +25,22 @@
         <property name="yCoord" type="int">
             <column name="YCOORD" />
         </property>
+
+		<union-subclass name="pl.edu.wat.wcy.model.entities.Truck" table="TRUCK">  
+        	<property name="regNumber" type="java.lang.String">
+            	<column name="REGNUMBER" />
+        	</property>
+        	<property name="isAbleToWork" type="boolean" access="field">
+            	<column name="ISABLETOWORK" />
+        	</property>
+  		</union-subclass>  
+  		
+  		<union-subclass name="pl.edu.wat.wcy.model.entities.Airplane" table="TRUCK">  
+            <property name="name" type="java.lang.String">
+            	<column name="NAME" />
+        	</property>
+  		</union-subclass>  
+  		
+  		
     </class>
 </hibernate-mapping>

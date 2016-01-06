@@ -1,13 +1,13 @@
 import org.hibernate.HibernateException;
 
 import pl.edu.wat.wcy.model.dao.EMStorage;
-import pl.edu.wat.wcy.model.dao.PojazdDao;
+import pl.edu.wat.wcy.model.dao.VehicleDao;
 import pl.edu.wat.wcy.model.entities.*;
 
 public class Main {
 
 	public static void main(String[] args) {
-		PojazdDao pojazdDao = new PojazdDao();
+		VehicleDao pojazdDao = new VehicleDao();
 		
 		Driver d = new Driver("Szymon", "M", "12345", "KatA-1234");
 		Truck tir = new Truck("LU12345", true, 1000, 100, 100);
