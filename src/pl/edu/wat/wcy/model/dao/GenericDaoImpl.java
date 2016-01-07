@@ -1,9 +1,11 @@
 package pl.edu.wat.wcy.model.dao;
 
+import java.util.ArrayList;
+
 public class GenericDaoImpl<T> implements GenericDao<T> {
 
 	Class<T> type;
-	
+	ArrayList<T> list;
 //	public GenericDaoImpl() {
 //		super();
 //		em.isOpen();
@@ -15,6 +17,7 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
 	public GenericDaoImpl(Class<T> type) {
 		super();
 		this.type = type;
+		this.list = new ArrayList<T>();
 	}
 
 	@Override
@@ -22,14 +25,17 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
 		EMStorage.getEm().getTransaction().begin();
 		EMStorage.getEm().persist(t);
 		EMStorage.getEm().getTransaction().commit();
+		list.add(t);
 		return t;
 	}
 
 	@Override
 	public void delete(Object id) {
 		EMStorage.getEm().getTransaction().begin();
+		T deleted = EMStorage.getEm().getReference(type, id);
 		EMStorage.getEm().remove(EMStorage.getEm().getReference(type, id));
 		EMStorage.getEm().getTransaction().commit();
+		list.remove(deleted);
 	}
 
 	@Override
