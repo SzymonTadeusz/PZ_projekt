@@ -1,7 +1,5 @@
 package pl.edu.wat.wcy.model.entities;
 
-import java.util.HashSet;
-
 @SuppressWarnings("serial")
 public class Airplane extends Vehicle {
 	

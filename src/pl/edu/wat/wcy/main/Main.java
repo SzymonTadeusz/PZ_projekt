@@ -15,18 +15,21 @@ public class Main {
 	
 	
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		CreateWindow window = new CreateWindow();
 
 		
-		Driver d = new Driver("Szymon", "M", "12345", "KatA-1234");
 		Truck tir = new Truck("LU12345", true, 1000, 100, 100);
+		Driver d = new Driver("Szymon", "M", "12345", "KatA-1234",tir);
 		tir.setCurrentDriver(d);
 		Airplane sam = new Airplane("Boeing 363", 10000, 150, 150);
 		vehicleDao.create(tir);
 		vehicleDao.create(sam);
 		Cargo da = new Cargo("Ceg³y",100);
+		da.addToVehicles(tir);
 		Main.getCargoDao().create(da);
+		Main.getDriverDao().create(d);
 		tir.addToCargo(da);
 		Vehicle obj2 = vehicleDao.retrieve(tir.getVehicleID());
 		Vehicle obj = vehicleDao.retrieve(sam.getVehicleID());

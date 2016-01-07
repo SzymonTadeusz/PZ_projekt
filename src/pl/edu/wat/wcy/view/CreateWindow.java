@@ -21,7 +21,7 @@ import pl.edu.wat.wcy.model.entities.*;
 public class CreateWindow {
 	static JFrame appWindow = new JFrame("PZ Projekt - Szymon Muszyñski");
 	static JPanel windowPanel = new JPanel(new BorderLayout());
-	static JPanel mapPanel = new MapPanel(new GridLayout());
+	static JPanel mapPanel = new JPanel(new GridLayout());
 	static JPanel buttonPanel = new JPanel(new GridLayout(10, 1));
 
 	public CreateWindow() {
@@ -33,7 +33,7 @@ public class CreateWindow {
 
 	public static void initializeWindowParameters() {
 		appWindow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		appWindow.setSize(920, 600);
+		appWindow.setSize(920, 630);
 		buttonPanel.setSize(200, 600);
 		mapPanel.setSize(800, 600);
 		Image bgImage = null;
@@ -210,7 +210,7 @@ public class CreateWindow {
 		buttonPanel.add(addNewCargo);
 		}
 		{
-		JButton addNewCargo = new JButton("//Zaladuj\\");
+		JButton addNewCargo = new JButton("ZA£ADUJ");
 		addNewCargo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -230,14 +230,12 @@ public class CreateWindow {
 						//System.out.println(vehicleBox.getSelectedItem());
 						Cargo c = (Cargo)cargoBox.getSelectedItem();
 						Vehicle v = (Vehicle)vehicleBox.getSelectedItem();
-						System.out.println(c);
-						System.out.println(v);
 						c.addToVehicles(v);
 						v.addToCargo(c);
 						Main.getCargoDao().update(c);
 						Main.getVehicleDao().update(v);
+						System.out.println("Zmodyfikowano:\n"+v);
 						addWindow.dispose();
-
 					}
 				});
 
@@ -278,7 +276,6 @@ public class CreateWindow {
 							numer = Integer.parseInt(textFieldStreetNo.getText());
 							x = Integer.parseInt(textFieldX.getText());
 							y = Integer.parseInt(textFieldY.getText());
-
 						} catch (NumberFormatException exc) {
 							numer = 200;
 							x=0;
@@ -298,6 +295,141 @@ public class CreateWindow {
 		});
 		buttonPanel.add(addNewWarehouse);
 		}
+		{
+			JButton removeDriver = new JButton("- Kierowca");
+			removeDriver.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JPanel panel = new JPanel(new BorderLayout());
+					JComboBox<Driver> driverBox = new JComboBox<Driver>((Driver[])Main.getDriverDao().getList().toArray(new Driver[Main.getDriverDao().getList().size()]));
+					panel.add(driverBox);
+					
+
+					JFrame addWindow = new JFrame("Usuñ kierowcê");
+					JButton bt = new JButton("ZatwierdŸ");
+					bt.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							Driver d = ((Driver)driverBox.getSelectedItem());
+							if(d.getDriverOf()!=null)
+								d.getDriverOf().setCurrentDriver(null);
+							d.setDriverOf(null); //najpierw usun powiazanie
+							Main.getDriverDao().update(d);
+							Main.getDriverDao().delete(((Driver)driverBox.getSelectedItem()).getDriverID());
+							System.out.println("Usuniêto kierowcê z bazy.");
+							addWindow.dispose();
+						}
+					});
+					panel.add(bt, BorderLayout.EAST);
+					addWindow.getContentPane().add(panel);
+					addWindow.pack();
+					addWindow.setVisible(true);
+				}
+			});
+			buttonPanel.add(removeDriver);
+			}
+		{
+			JButton removeVehicle = new JButton("- Pojazd");
+			removeVehicle.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JPanel panel = new JPanel(new BorderLayout());
+					JComboBox<Vehicle> vehicleBox = new JComboBox<Vehicle>((Vehicle[])Main.getVehicleDao().getList().toArray(new Vehicle[Main.getVehicleDao().getList().size()]));
+					panel.add(vehicleBox);
+					
+
+					JFrame addWindow = new JFrame("Usuñ pojazd");
+					JButton bt = new JButton("ZatwierdŸ");
+					bt.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							Vehicle r = ((Vehicle)vehicleBox.getSelectedItem());
+							if(r.getCurrentDriver()!=null)
+								r.getCurrentDriver().setDriverOf(null);
+							r.setCurrentDriver(null); //najpierw usun powiazanie
+							Main.getVehicleDao().update(r);
+							Main.getVehicleDao().delete(((Vehicle)vehicleBox.getSelectedItem()).getVehicleID());
+							System.out.println("Usuniêto pojazd z bazy.");
+							addWindow.dispose();
+						}
+					});
+					panel.add(bt, BorderLayout.EAST);
+					addWindow.getContentPane().add(panel);
+					addWindow.pack();
+					addWindow.setVisible(true);
+				}
+			});
+			buttonPanel.add(removeVehicle);
+			}
+		{
+			JButton removeCargo = new JButton("- £adunek");
+			removeCargo.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JPanel panel = new JPanel(new BorderLayout());
+					JComboBox<Cargo> cargoBox = new JComboBox<Cargo>((Cargo[])Main.getCargoDao().getList().toArray(new Cargo[Main.getCargoDao().getList().size()]));
+					panel.add(cargoBox);
+					
+
+					JFrame addWindow = new JFrame("Usuñ ³adunek");
+					JButton bt = new JButton("ZatwierdŸ");
+					bt.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							Cargo r = ((Cargo)cargoBox.getSelectedItem());
+							if(r.getVehicle()!=null)
+								for(Vehicle v : r.getVehicle())
+									v.removeFromCargo(r);
+							r.setVehicle(null); //najpierw usun powiazanie
+							Main.getCargoDao().update(r);
+							Main.getCargoDao().delete(((Cargo)cargoBox.getSelectedItem()).getCargoID());
+							System.out.println("Usuniêto ³adunek z bazy.");
+							addWindow.dispose();
+						}
+					});
+					panel.add(bt, BorderLayout.EAST);
+					addWindow.getContentPane().add(panel);
+					addWindow.pack();
+					addWindow.setVisible(true);
+				}
+			});
+			buttonPanel.add(removeCargo);
+			}
+		{
+			JButton removeWarehouse = new JButton("- Magazyn");
+			removeWarehouse.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JPanel panel = new JPanel(new BorderLayout());
+					JComboBox<Warehouse> warehouseBox = new JComboBox<Warehouse>((Warehouse[])Main.getWarehouseDao().getList().toArray(new Warehouse[Main.getWarehouseDao().getList().size()]));
+					panel.add(warehouseBox);
+					
+
+					JFrame addWindow = new JFrame("Usuñ magazyn");
+					JButton bt = new JButton("ZatwierdŸ");
+					bt.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							Warehouse r = ((Warehouse)warehouseBox.getSelectedItem());
+							if(r.getAwaitingTransport()!=null)
+								for(Transport t : r.getAwaitingTransport())
+									t.setDestination(null);
+							r.setAwaitingTransport(null); //najpierw usun powiazanie
+							Main.getWarehouseDao().update(r);
+							Main.getWarehouseDao().delete(((Warehouse)warehouseBox.getSelectedItem()).getWarehouseID());
+							System.out.println("Usuniêto magazyn z bazy.");
+							addWindow.dispose();
+						}
+					});
+					panel.add(bt, BorderLayout.EAST);
+					addWindow.getContentPane().add(panel);
+					addWindow.pack();
+					addWindow.setVisible(true);
+				}
+			});
+			buttonPanel.add(removeWarehouse);
+			}
+		
 	}
 
 	

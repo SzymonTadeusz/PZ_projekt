@@ -3,6 +3,7 @@ package pl.edu.wat.wcy.model.entities;
 public class Driver {
 
 	private int driverID;
+	private Vehicle driverOf;
 	private String firstName;
 	private String surname;
 	private String idNumber;
@@ -16,6 +17,14 @@ public class Driver {
 		this.setSurname(sn);
 		this.setIdNumber(idNr);
 		this.setLicenseNumber(licNr);
+	}
+	
+	public Driver(String n, String sn, String idNr, String licNr, Vehicle v) {
+		this.setFirstName(n);
+		this.setSurname(sn);
+		this.setIdNumber(idNr);
+		this.setLicenseNumber(licNr);
+		this.setDriverOf(v);
 	}
 
 	@Override
@@ -61,6 +70,16 @@ public class Driver {
 
 	public void setLicenseNumber(String licenseNumber) {
 		this.licenseNumber = licenseNumber;
+	}
+
+	public Vehicle getDriverOf() {
+		return driverOf;
+	}
+
+	public void setDriverOf(Vehicle driverOf) {
+		this.driverOf = driverOf;
+		if(this.driverOf!=null && this.driverOf != driverOf)
+		driverOf.setCurrentDriver(this);
 	}
 
 }

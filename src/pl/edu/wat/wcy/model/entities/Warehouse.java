@@ -76,7 +76,7 @@ public class Warehouse {
 		return awaitingTransport;
 	}
 
-	public void setAwaitingTransport(HashSet<Transport> awaitingTransport) {
+	public void setAwaitingTransport(Set<Transport> awaitingTransport) {
 		this.awaitingTransport = awaitingTransport;
 	}
 	

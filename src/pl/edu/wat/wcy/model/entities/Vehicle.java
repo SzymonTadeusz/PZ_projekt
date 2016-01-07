@@ -24,13 +24,13 @@ public abstract class Vehicle implements Serializable {
 	}
 
 	@Override
-	public String toString()
-	{
-		String cargo=" ";
-		if(currentCargo!=null)
-			for(Cargo c: currentCargo)
-				cargo+=(c+", ");
-		return ("Pojazd "+this.vehicleID+", pojemnosc: "+this.capacity+", kierowca: "+this.currentDriver+". Przewozi: "+cargo);
+	public String toString() {
+		String cargo = " ";
+		if (currentCargo != null)
+			for (Cargo c : currentCargo)
+				cargo += (c + ", ");
+		return ("Pojazd " + this.vehicleID + ", pojemnosc: " + this.capacity + ", kierowca: " + this.currentDriver
+				+ ". Przewozi: " + cargo);
 	}
 
 	public int getVehicleID() {
@@ -59,6 +59,8 @@ public abstract class Vehicle implements Serializable {
 
 	public void setCurrentDriver(Driver currentDriver) {
 		this.currentDriver = currentDriver;
+		if (this.currentDriver != null && this.currentDriver != currentDriver)
+			currentDriver.setDriverOf(this);
 	}
 
 	public Set<Cargo> getCurrentCargo() {
@@ -70,7 +72,8 @@ public abstract class Vehicle implements Serializable {
 	}
 
 	public void addToCargo(Cargo addCargo) {
-		if(this.currentCargo == null) this.currentCargo = new HashSet<Cargo>();
+		if (this.currentCargo == null)
+			this.currentCargo = new HashSet<Cargo>();
 		this.currentCargo.add(addCargo);
 	}
 
