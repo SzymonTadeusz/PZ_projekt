@@ -2,13 +2,14 @@ package pl.edu.wat.wcy.model.entities;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Set;
 
 public abstract class Vehicle implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int vehicleID;
 	private int capacity;
 	private Driver currentDriver;
-	private HashSet<Cargo> currentCargo;
+	private Set<Cargo> currentCargo = new HashSet<Cargo>();
 	private int xCoord;
 	private int yCoord;
 
@@ -25,10 +26,10 @@ public abstract class Vehicle implements Serializable {
 	@Override
 	public String toString()
 	{
-		String cargo=null;
+		String cargo=" ";
 		if(currentCargo!=null)
 			for(Cargo c: currentCargo)
-				cargo+=c;
+				cargo+=(c+", ");
 		return ("Pojazd "+this.vehicleID+", pojemnosc: "+this.capacity+", kierowca: "+this.currentDriver+". Przewozi: "+cargo);
 	}
 
@@ -60,15 +61,16 @@ public abstract class Vehicle implements Serializable {
 		this.currentDriver = currentDriver;
 	}
 
-	public HashSet<Cargo> getCurrentCargo() {
+	public Set<Cargo> getCurrentCargo() {
 		return currentCargo;
 	}
 
-	public void setCurrentCargo(HashSet<Cargo> currentCargo) {
+	public void setCurrentCargo(Set<Cargo> currentCargo) {
 		this.currentCargo = currentCargo;
 	}
 
 	public void addToCargo(Cargo addCargo) {
+		if(this.currentCargo == null) this.currentCargo = new HashSet<Cargo>();
 		this.currentCargo.add(addCargo);
 	}
 

@@ -20,7 +20,7 @@ public class Driver {
 
 	@Override
 	public String toString() {
-		return (this.firstName + " " + this.surname + ", PESEL:" + this.idNumber + ", DrvLicNo. " + this.licenseNumber);
+		return ("[" +this.firstName + " " + this.surname + ", PESEL:" + this.idNumber + ", DrvLicNr: " + this.licenseNumber + "]");
 	}
 
 	public int getDriverID() {

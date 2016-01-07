@@ -1,6 +1,7 @@
 package pl.edu.wat.wcy.model.entities;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public class Warehouse {
 
@@ -10,7 +11,7 @@ public class Warehouse {
 	private String warehouseName;
 	private int xCoord;
 	private int yCoord;
-	private HashSet<Transport> awaitingTransport;
+	private Set<Transport> awaitingTransport = new HashSet<Transport>();
 	
 	@Override
 	public String toString()
@@ -71,7 +72,7 @@ public class Warehouse {
 		this.yCoord = yCoord;
 	}
 
-	public HashSet<Transport> getAwaitingTransport() {
+	public Set<Transport> getAwaitingTransport() {
 		return awaitingTransport;
 	}
 

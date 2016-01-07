@@ -1,11 +1,12 @@
 package pl.edu.wat.wcy.model.entities;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public class CurrentTransportsList {
 
 	private int currentTransportsListID;
-	private HashSet<Transport> transports;
+	private Set<Transport> transports = new HashSet<Transport>();
 	
 	public CurrentTransportsList(){}
 	
@@ -30,10 +31,10 @@ public class CurrentTransportsList {
 	public void setCurrentTransportsListID(int currentTransportsListID) {
 		this.currentTransportsListID = currentTransportsListID;
 	}
-	public HashSet<Transport> getTransports() {
+	public Set<Transport> getTransports() {
 		return transports;
 	}
-	public void setTransports(HashSet<Transport> transports) {
+	public void setTransports(Set<Transport> transports) {
 		this.transports = transports;
 	}
 	public void addToTransports(Transport t)

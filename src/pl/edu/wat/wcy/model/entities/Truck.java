@@ -1,5 +1,7 @@
 package pl.edu.wat.wcy.model.entities;
 
+import java.util.HashSet;
+
 @SuppressWarnings("serial")
 public class Truck extends Vehicle {
 	
@@ -14,18 +16,28 @@ public class Truck extends Vehicle {
 	{
 		this.setRegNumber(regNr);
 		this.setAbleToWork(able);
+//		this.setCurrentCargo(new HashSet<Cargo>();
 	}
 	public Truck(String regNr, boolean able, int capacity, int x, int y)
 	{
 		super(capacity,x,y);
 		this.setRegNumber(regNr);
 		this.setAbleToWork(able);
+//		this.setCurrentCargo(new HashSet<Cargo>();
+
 	}
 	
 	@Override
 	public String toString()
 	{
-		return (super.toString() + ", TIR - Nr rejestracyjny: "+this.regNumber+", sprawny: "+this.isAbleToWork);
+		String cargo=" {";
+		String sprawny = " ";
+		sprawny=(this.isAbleToWork=true) ? " sprawny" : " niesprawny";
+		if(this.getCurrentCargo()!=null)
+			for(Cargo c: this.getCurrentCargo())
+				cargo+=(c+" ");
+		cargo+="}";
+		return ("Pojazd "+this.getVehicleID()+ sprawny +" TIR - nr: " + this.getRegNumber() +", pojemnosc: "+this.getCapacity()+", kierowca: "+this.getCurrentDriver()+". Przewozi: "+cargo);
 	}
 	
 	public String getRegNumber() {

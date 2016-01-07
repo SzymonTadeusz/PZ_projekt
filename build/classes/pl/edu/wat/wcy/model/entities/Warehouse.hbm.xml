@@ -8,11 +8,28 @@
             <column name="ID" />
             <generator class="increment" />
         </id>
+        <property name="street" type="java.lang.String" access="field">
+            <column name="STREET" />
+        </property>
+        <property name="streetNumber" type="int" access="field">
+            <column name="STREETNO" />
+        </property>
+        <property name="warehouseName" type="java.lang.String" access="field">
+            <column name="NAME" />
+        </property>
+        <property name="xCoord" type="int" access="field">
+            <column name="XCOORD" />
+        </property>
+        <property name="yCoord" type="int" access="field">
+            <column name="YCOORD" />
+        </property> 
         <set name="awaitingTransport" table="CARGO" inverse="true" lazy="false" cascade="all">
             <key>
                 <column name="transportID" />
             </key>
             <one-to-many class="pl.edu.wat.wcy.model.entities.Transport" />
         </set>
+        
+
     </class>
 </hibernate-mapping>

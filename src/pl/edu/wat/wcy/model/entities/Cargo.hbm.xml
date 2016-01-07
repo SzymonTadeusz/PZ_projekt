@@ -5,7 +5,7 @@
 <hibernate-mapping>
     <class name="pl.edu.wat.wcy.model.entities.Cargo" table="CARGO">
         <id name="cargoID" type="int" access="field">
-            <column name="ID" />
+            <column name="cargoID" />
             <generator class="increment" />
         </id>
         <set name="vehicle" table="CARGO_VEHICLE" inverse="false" lazy="false" cascade="all" access="field">

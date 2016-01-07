@@ -5,7 +5,7 @@
 <hibernate-mapping>
     <class name="pl.edu.wat.wcy.model.entities.Vehicle" table="VEHICLE" abstract="true">
         <id name="vehicleID" type="int">
-            <column name="ID" />
+            <column name="vehicleID" />
             <generator class="increment" />
         </id>
         
@@ -13,7 +13,7 @@
             <column name="CAPACITY" />
         </property>
         <one-to-one name="currentDriver" class="pl.edu.wat.wcy.model.entities.Driver" cascade="all"></one-to-one>
-        <set name="currentCargo" table="CARGO" inverse="true" lazy="false" cascade="all">
+        <set name="currentCargo" table="CARGO_VEHICLE" inverse="true" lazy="false" cascade="all">
             <key>
                 <column name="cargoID" />
             </key>

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class GenericDaoImpl<T> implements GenericDao<T> {
 
 	Class<T> type;
-	ArrayList<T> list;
+	private ArrayList<T> list;
 //	public GenericDaoImpl() {
 //		super();
 //		em.isOpen();
@@ -49,6 +49,11 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
 		EMStorage.getEm().merge(t);
 		EMStorage.getEm().getTransaction().commit();
 			return t;
+	}
+	
+	public ArrayList<T> getList()
+	{
+		return this.list;
 	}
 
 }
