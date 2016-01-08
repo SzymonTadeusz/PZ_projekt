@@ -1,5 +1,8 @@
 package pl.edu.wat.wcy.model.entities;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,6 +32,13 @@ public class Warehouse {
 		this.setWarehouseName(wName);
 		this.setxCoord(x);
 		this.setyCoord(y);
+	}
+	
+	public void paint(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+		
+		g2d.setColor(Color.DARK_GRAY);
+		g2d.fillOval(this.xCoord, this.yCoord, 15,15);
 	}
 	
 	public int getWarehouseID() {

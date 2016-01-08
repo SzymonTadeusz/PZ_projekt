@@ -12,6 +12,10 @@ public class Transport {
 		this.setDestination(dest);
 	}
 	
+	@Override
+	public String toString() {
+		return ("Transport " + transportID+ " do " + getDestination());
+	};
 	
 	public Warehouse getDestination() {
 		return destination;

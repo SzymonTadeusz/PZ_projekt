@@ -19,6 +19,8 @@
             </key>
             <one-to-many class="pl.edu.wat.wcy.model.entities.Cargo" />
         </set>
+        <one-to-one name="transport" class="pl.edu.wat.wcy.model.entities.Transport" cascade="all"></one-to-one>
+                
         <property name="xCoord" type="int">
             <column name="XCOORD" />
         </property>

@@ -1,5 +1,8 @@
 package pl.edu.wat.wcy.model.entities;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,6 +15,7 @@ public abstract class Vehicle implements Serializable {
 	private Set<Cargo> currentCargo = new HashSet<Cargo>();
 	private int xCoord;
 	private int yCoord;
+	private Transport transport;
 
 	public Vehicle() {
 		super();
@@ -23,6 +27,13 @@ public abstract class Vehicle implements Serializable {
 		this.setyCoord(y);
 	}
 
+	public Vehicle(int capacity, int x, int y, Transport t) {
+		this.setCapacity(capacity);
+		this.setxCoord(x);
+		this.setyCoord(y);
+		this.setTransport(t);
+	}
+
 	@Override
 	public String toString() {
 		String cargo = " ";
@@ -30,7 +41,7 @@ public abstract class Vehicle implements Serializable {
 			for (Cargo c : currentCargo)
 				cargo += (c + ", ");
 		return ("Pojazd " + this.vehicleID + ", pojemnosc: " + this.capacity + ", kierowca: " + this.currentDriver
-				+ ". Przewozi: " + cargo);
+				+ ". Przewozi: " + cargo + "Transport do: " + this.getTransport().getDestination());
 	}
 
 	public int getVehicleID() {
@@ -95,6 +106,38 @@ public abstract class Vehicle implements Serializable {
 
 	public void setyCoord(int yCoord) {
 		this.yCoord = yCoord;
+	}
+
+	public Transport getTransport() {
+		return transport;
+	}
+
+	public void setTransport(Transport transport) {
+		this.transport = transport;
+	}
+
+	public void paint(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+
+		g2d.setColor(Color.GREEN);
+		g2d.fillOval(this.xCoord, this.yCoord, 10, 10);
+	}
+
+	public void move() {
+		if (this.getTransport() != null && this.getTransport().getDestination() != null) {
+			int delta = 1;
+			int xDest = this.getTransport().getDestination().getxCoord();
+			int yDest = this.getTransport().getDestination().getyCoord();
+			if (this.getxCoord() < xDest)
+				this.setxCoord(getxCoord() + delta);
+			if (this.getxCoord() > xDest)
+				this.setxCoord(getxCoord() - delta);
+			if (this.getyCoord() < yDest)
+				this.setyCoord(getyCoord() + delta);
+			if (this.getyCoord() > yDest)
+				this.setyCoord(getyCoord() - delta);
+
+		}
 	}
 
 }

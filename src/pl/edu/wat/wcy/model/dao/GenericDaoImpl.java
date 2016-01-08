@@ -6,13 +6,13 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
 
 	Class<T> type;
 	private ArrayList<T> list;
-//	public GenericDaoImpl() {
-//		super();
-//		em.isOpen();
-//		Type t = getClass().getGenericSuperclass();
-//		ParameterizedType pt = (ParameterizedType)t;
-//		type = (Class)pt.getActualTypeArguments()[0];
-//	}
+	// public GenericDaoImpl() {
+	// super();
+	// em.isOpen();
+	// Type t = getClass().getGenericSuperclass();
+	// ParameterizedType pt = (ParameterizedType)t;
+	// type = (Class)pt.getActualTypeArguments()[0];
+	// }
 
 	public GenericDaoImpl(Class<T> type) {
 		super();
@@ -22,20 +22,28 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
 
 	@Override
 	public T create(T t) {
-		EMStorage.getEm().getTransaction().begin();
-		EMStorage.getEm().persist(t);
-		EMStorage.getEm().getTransaction().commit();
-		list.add(t);
+		try {
+			EMStorage.getEm().getTransaction().begin();
+			EMStorage.getEm().persist(t);
+			EMStorage.getEm().getTransaction().commit();
+			list.add(t);
+		} catch (Exception e) {
+			System.out.println("Blad tworzenia: " + e.getMessage());
+		}
 		return t;
 	}
 
 	@Override
 	public void delete(Object id) {
-		EMStorage.getEm().getTransaction().begin();
-		T deleted = EMStorage.getEm().getReference(type, id);
-		EMStorage.getEm().remove(EMStorage.getEm().getReference(type, id));
-		EMStorage.getEm().getTransaction().commit();
-		list.remove(deleted);
+		try {
+			EMStorage.getEm().getTransaction().begin();
+			T deleted = EMStorage.getEm().getReference(type, id);
+			EMStorage.getEm().remove(EMStorage.getEm().getReference(type, id));
+			EMStorage.getEm().getTransaction().commit();
+			list.remove(deleted);
+		} catch (Exception e) {
+			System.out.println("Blad usuwania: " + e.getMessage());
+		}
 	}
 
 	@Override
@@ -45,14 +53,17 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
 
 	@Override
 	public T update(T t) {
-		EMStorage.getEm().getTransaction().begin();
-		EMStorage.getEm().merge(t);
-		EMStorage.getEm().getTransaction().commit();
-			return t;
+		try {
+			EMStorage.getEm().getTransaction().begin();
+			EMStorage.getEm().merge(t);
+			EMStorage.getEm().getTransaction().commit();
+		} catch (Exception e) {
+			System.out.println("Blad aktualizacji: " + e.getMessage());
+		}
+		return t;
 	}
-	
-	public ArrayList<T> getList()
-	{
+
+	public ArrayList<T> getList() {
 		return this.list;
 	}
 
