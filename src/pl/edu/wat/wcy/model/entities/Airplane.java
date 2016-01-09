@@ -36,8 +36,9 @@ public class Airplane extends Vehicle {
 		if (this.getCurrentCargo() != null)
 			for (Cargo c : this.getCurrentCargo())
 				cargo += (c + " ");
-		return ("Pojazd " + this.getVehicleID() + " SAMOLOT - nazwa: " + this.name + ", pojemnosc: "
-				+ this.getCapacity() + ", kierowca: " + this.getCurrentDriver() + ". Przewozi: " + cargo);
+		return ("Pojazd " + this.getVehicleID() + " SAMOLOT - nazwa: " + this.name + " (" + this.getxCoord() + ","
+				+ this.getyCoord() + "), pojemnosc: " + this.getCapacity() + ", kierowca: " + this.getCurrentDriver()
+				+ ". Przewozi: {" + cargo + "}");
 	}
 
 	public void paint(Graphics g) {

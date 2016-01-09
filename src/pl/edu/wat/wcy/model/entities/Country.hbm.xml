@@ -14,5 +14,12 @@
         <property name="countryAbbrev" type="java.lang.String" access="field">
             <column name="COUNTRYABBREV" />
         </property>
+        <set name="warehouses" table="COUNTRY" inverse="false" lazy="false" cascade="all" access="field">
+            <key>
+                <column name="warehuseID" />
+            </key>
+            <one-to-many class="pl.edu.wat.wcy.model.entities.Warehouse" />
+        </set>
+        
     </class>
 </hibernate-mapping>

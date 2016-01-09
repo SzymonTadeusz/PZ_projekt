@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ConcurrentModificationException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -16,12 +17,11 @@ import pl.edu.wat.wcy.main.Main;
 import pl.edu.wat.wcy.model.entities.Vehicle;
 import pl.edu.wat.wcy.model.entities.Warehouse;
 
-
 @SuppressWarnings("serial")
-public class MapPanel extends JPanel  implements ActionListener{
+public class MapPanel extends JPanel implements ActionListener {
 	private Timer timer;
 	private Image bgImage;
-	private int delay=250;
+	private int delay = 250;
 
 	public MapPanel() {
 		loadMap();
@@ -44,33 +44,34 @@ public class MapPanel extends JPanel  implements ActionListener{
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-        g.drawImage(bgImage, 0, 0, null);
-		for (Vehicle v : Main.getVehicleDao().getList()) {
-			v.move();
-			v.paint(g);
-		}
-		for (Warehouse w: Main.getWarehouseDao().getList()) {
-			w.paint(g);
-		}
-		
+		try {
+			super.paintComponent(g);
+			g.drawImage(bgImage, 0, 0, null);
+			for (Vehicle v : Main.getVehicleDao().getList()) {
+				v.move();
+				v.paint(g);
+			}
+			for (Warehouse w : Main.getWarehouseDao().getList()) {
+				w.paint(g);
+			}
+		} catch (ConcurrentModificationException e) {}
+
 	}
 
-	public void actionPerformed(ActionEvent ev){
-	    if(ev.getSource()==timer){
-	      repaint();
-	    }
+	public void actionPerformed(ActionEvent ev) {
+		if (ev.getSource() == timer) {
+			repaint();
+		}
 	}
 
-	public void loadMap()
-	{
+	public void loadMap() {
 		try {
 			bgImage = ImageIO.read(new File("./resources/bgMap.jpg"));
 		} catch (IOException e) {
 			System.out.println("Nie zaladowano mapy!");
 		}
-		timer = new Timer(delay,this);
+		timer = new Timer(delay, this);
 		timer.start();
 	}
-	
+
 }

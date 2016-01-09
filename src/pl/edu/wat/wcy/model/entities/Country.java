@@ -1,8 +1,13 @@
 package pl.edu.wat.wcy.model.entities;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public class Country {
 		private int countryID;
 		private String countryName;
 		private String countryAbbrev;
+		private Set<Warehouse> warehouses = new HashSet<Warehouse>();
 		
 		public Country(){}
 		
@@ -11,6 +16,11 @@ public class Country {
 			this.setCountryAbbrev(abbr);
 			this.setCountryName(name);
 		}
+		
+		@Override
+		public String toString() {
+			return (this.countryName + " (" + this.countryAbbrev + ")");
+		};
 		
 		public int getCountryID() {
 			return countryID;
@@ -29,6 +39,24 @@ public class Country {
 		}
 		public void setCountryAbbrev(String countryAbbrev) {
 			this.countryAbbrev = countryAbbrev;
+		}
+
+		public Set<Warehouse> getWarehouses() {
+			return warehouses;
+		}
+
+		public void setWarehouses(Set<Warehouse> warehouses) {
+			this.warehouses = warehouses;
+		}
+		
+		public void addToWarehouses(Warehouse t)
+		{
+			this.getWarehouses().add(t);
+		}
+		
+		public void removeFromWarehouses(Warehouse t)
+		{
+			this.getWarehouses().remove(t);
 		}
 		
 		

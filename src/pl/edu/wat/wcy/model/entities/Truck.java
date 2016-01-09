@@ -43,8 +43,9 @@ public class Truck extends Vehicle {
 			for (Cargo c : this.getCurrentCargo())
 				cargo += (c + " ");
 		cargo += "}";
-		return ("Pojazd " + this.getVehicleID() + sprawny + " TIR - nr: " + this.getRegNumber() + ", pojemnosc: "
-				+ this.getCapacity() + ", kierowca: " + this.getCurrentDriver() + ". Przewozi: " + cargo);
+		return ("Pojazd " + this.getVehicleID() + sprawny + " TIR - nr: " + this.getRegNumber() + " ("
+				+ this.getxCoord() + "," + this.getyCoord() + "), pojemnosc: " + this.getCapacity() + ", kierowca: "
+				+ this.getCurrentDriver() + ". Przewozi: " + cargo);
 	}
 
 	public void paint(Graphics g) {
@@ -57,9 +58,9 @@ public class Truck extends Vehicle {
 	}
 
 	public void move() {
-		if (this.getTransport()!= null && this.getTransport().getDestination() != null) {
+		if (this.getTransport() != null && this.getTransport().getDestination() != null) {
 			if (this.isAbleToWork == true) {
-				int delta=3;
+				int delta = 3;
 				int xDest = this.getTransport().getDestination().getxCoord();
 				int yDest = this.getTransport().getDestination().getyCoord();
 				if (this.getxCoord() < xDest)

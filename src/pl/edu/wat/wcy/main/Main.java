@@ -18,7 +18,6 @@ public class Main {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		CreateWindow window = new CreateWindow();
-
 		addVehicles();
 		addDrivers();
 		addWarehouses();
@@ -30,18 +29,43 @@ public class Main {
 			c.addToVehicles(v);
 			v.setCurrentDriver(d);
 		}
+		
+		CreateWindow.getAppWindow().getContentPane().remove(0);
+		CreateWindow.getWindowPanel().setVisible(true);
 	}
 
 	public static void addWarehouses() {
-		Warehouse w = new Warehouse("Berlin, Weierstraße", 3, "Magazyn Berlin 1", 195, 165);
-		Warehouse w2 = new Warehouse("Warszawa, Marszałkowska", 102, "Magazyn Warszawa 1", 505, 185);
-		Warehouse w3 = new Warehouse("Wrocław, Pl. Katedralny", 1, "Magazyn Wrocław 1", 340, 260);
-		Warehouse w4 = new Warehouse("Praha, Karluv Pl.", 30, "Magazyn Praga 1", 235, 325);
-		Warehouse w5 = new Warehouse("Budapest, Szegetek", 1, "Magazyn Budapeszt 1", 430, 490);
-		Warehouse w6 = new Warehouse("Львов, Вернигори", 11, "Magazyn Lwów 1", 630, 345);
-		Warehouse w7 = new Warehouse("Vilnius, Šimašiusai", 25, "Magazyn Wilno 1", 685, 15);
-		Warehouse w8 = new Warehouse("Stuttgart, Kohlstraße", 25, "Magazyn Stuttgart 1", 20, 410);
+		Country c1 = new Country("Polska  ", "PL");
+		Country c2 = new Country("Niemcy  ", "DE");
+		Country c3 = new Country("Litwa   ", "LT");
+		Country c4 = new Country("Czechy  ", "CZ");
+		Country c5 = new Country("Słowacja", "SK");
+		Country c6 = new Country("Ukraina ", "UA");
+		Country c7 = new Country("Węgry   ", "HU");
+		Country c8 = new Country("Rosja   ", "RU");
+		Country c9 = new Country("Austria ", "AT");
+		Country c10 = new Country("Inne    ", "--");
+
+	
+		Warehouse w = new Warehouse("Berlin, Weierstraße", 3, "Magazyn Berlin 1", 195, 165,c2);
+		Warehouse w2 = new Warehouse("Warszawa, Marszałkowska", 102, "Magazyn Warszawa 1", 505, 185, c1);
+		Warehouse w3 = new Warehouse("Wrocław, Pl. Katedralny", 1, "Magazyn Wrocław 1", 340, 260, c1);
+		Warehouse w4 = new Warehouse("Praha, Karluv Pl.", 30, "Magazyn Praga 1", 235, 325, c4);
+		Warehouse w5 = new Warehouse("Budapest, Szegetek", 1, "Magazyn Budapeszt 1", 430, 490,c7);
+		Warehouse w6 = new Warehouse("Львов, Вернигори", 11, "Magazyn Lwów 1", 630, 345,c6);
+		Warehouse w7 = new Warehouse("Vilnius, Šimašiusai", 25, "Magazyn Wilno 1", 685, 15,c3);
+		Warehouse w8 = new Warehouse("Stuttgart, Kohlstraße", 25, "Magazyn Stuttgart 1", 20, 410,c2);
 		try {
+			countryDao.create(c1);
+			countryDao.create(c2);
+			countryDao.create(c3);
+			countryDao.create(c4);
+			countryDao.create(c5);
+			countryDao.create(c6);
+			countryDao.create(c7);
+			countryDao.create(c8);
+			countryDao.create(c9);
+			countryDao.create(c10);
 			warehouseDao.create(w);
 			warehouseDao.create(w2);
 			warehouseDao.create(w3);
