@@ -6,7 +6,9 @@ import java.awt.Graphics2D;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Warehouse {
+import pl.edu.wat.wcy.events.Arrivable;
+
+public class Warehouse implements Arrivable{
 
 	private int warehouseID;
 	private String street;

@@ -551,6 +551,8 @@ public class CreateWindow {
 						Transport t = (Transport) transportBox.getSelectedItem();
 						Vehicle v = (Vehicle) vehicleBox.getSelectedItem();
 						v.setTransport(t);
+						v.setArrivalListener(t.getDestination());
+						t.getDestination().addToTransports(t);
 						Main.getTransportDao().update(t);
 						Main.getVehicleDao().update(v);
 						System.out.println("Dodano:\n" + v);

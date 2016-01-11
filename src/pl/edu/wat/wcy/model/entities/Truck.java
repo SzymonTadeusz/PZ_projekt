@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Set;
 
+import pl.edu.wat.wcy.events.VehicleArrivedEvent;
+
 @SuppressWarnings("serial")
 public class Truck extends Vehicle {
 
@@ -71,6 +73,7 @@ public class Truck extends Vehicle {
 					this.setyCoord(getyCoord() + delta);
 				if (this.getyCoord() > yDest)
 					this.setyCoord(getyCoord() - delta);
+				if((Math.abs(this.getxCoord()-xDest)<5) && (Math.abs(this.getyCoord()-yDest)<5)) this.informAboutTheArrival(new VehicleArrivedEvent(this)); ;
 			}
 		}
 

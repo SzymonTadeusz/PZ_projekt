@@ -7,6 +7,9 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import pl.edu.wat.wcy.events.Arrivable;
+import pl.edu.wat.wcy.events.VehicleArrivedEvent;
+
 public abstract class Vehicle implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int vehicleID;
@@ -16,6 +19,7 @@ public abstract class Vehicle implements Serializable {
 	private int xCoord;
 	private int yCoord;
 	private Transport transport;
+	private Arrivable listener;
 
 	public Vehicle() {
 		super();
@@ -43,6 +47,15 @@ public abstract class Vehicle implements Serializable {
 		return ("Pojazd " + this.vehicleID + ", pojemnosc: " + this.capacity + ", kierowca: " + this.currentDriver
 				+ ". Przewozi: " + cargo + "Transport do: " + this.getTransport().getDestination());
 	}
+	
+
+    public void setArrivalListener(Arrivable obserwator){
+        listener = obserwator;
+    }
+
+	public void informAboutTheArrival(VehicleArrivedEvent e) { //informuje o zdarzeniach
+                listener.handleArrival(e);
+    }
 
 	public int getVehicleID() {
 		return vehicleID;
