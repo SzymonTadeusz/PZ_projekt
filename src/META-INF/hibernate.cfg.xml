@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory name="PZProjekt">
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.password">qaz123</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/PZProjekt</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.default_schema">PZProjekt</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        
+        <mapping resource="pl/edu/wat/wcy/model/entities/Cargo.hbm.xml" />
+        <mapping resource="pl/edu/wat/wcy/model/entities/Country.hbm.xml" />
+        <mapping resource="pl/edu/wat/wcy/model/entities/CurrentTransportsList.hbm.xml" />
+        <mapping resource="pl/edu/wat/wcy/model/entities/Driver.hbm.xml" />
+        <mapping resource="pl/edu/wat/wcy/model/entities/EventLog.hbm.xml" />
+        <mapping resource="pl/edu/wat/wcy/model/entities/Role.hbm.xml" />
+        <mapping resource="pl/edu/wat/wcy/model/entities/Transport.hbm.xml" />
+        <mapping resource="pl/edu/wat/wcy/model/entities/TransportHistory.hbm.xml" />
+        <mapping resource="pl/edu/wat/wcy/model/entities/User.hbm.xml" />
+        <mapping resource="pl/edu/wat/wcy/model/entities/Vehicle.hbm.xml" />
+        <mapping resource="pl/edu/wat/wcy/model/entities/Warehouse.hbm.xml" />
+    
+    </session-factory>
+</hibernate-configuration>

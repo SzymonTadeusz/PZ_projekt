@@ -22,14 +22,14 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
 
 	@Override
 	public T create(T t) {
-		try {
+	//	try {
 			EMStorage.getEm().getTransaction().begin();
 			EMStorage.getEm().persist(t);
 			EMStorage.getEm().getTransaction().commit();
 			list.add(t);
-		} catch (Exception e) {
-			System.out.println("Blad tworzenia: " + e.getMessage());
-		}
+//		} catch (Exception e) {
+//			System.out.println("Blad tworzenia: " + e.getMessage());
+	//	}
 		return t;
 	}
 

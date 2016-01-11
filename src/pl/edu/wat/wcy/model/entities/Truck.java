@@ -3,7 +3,15 @@ package pl.edu.wat.wcy.model.entities;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Set;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 import pl.edu.wat.wcy.events.VehicleArrivedEvent;
 
@@ -20,6 +28,16 @@ public class Truck extends Vehicle {
 	public Truck(String regNr, boolean able) {
 		this.setRegNumber(regNr);
 		this.setAbleToWork(able);
+		Image img = null;
+		try {
+			if (this.isAbleToWork)
+				img = ImageIO.read(new File("./resources/truckAble.jpg"));
+			else
+				img = ImageIO.read(new File("./resources/truckDisabled.jpg"));
+		} catch (IOException e) {
+			System.out.println("Nie zaladowano ikony!");
+		}
+		this.icon = img;
 	}
 
 	public Truck(String regNr, boolean able, int capacity, int x, int y, Set<Cargo> c, Transport t) {
@@ -28,12 +46,32 @@ public class Truck extends Vehicle {
 		this.setAbleToWork(able);
 		this.setCurrentCargo(c);
 		this.setTransport(t);
+		Image img = null;
+		try {
+			if (this.isAbleToWork)
+				img = ImageIO.read(new File("./resources/truckAble.jpg"));
+			else
+				img = ImageIO.read(new File("./resources/truckDisabled.jpg"));
+		} catch (IOException e) {
+			System.out.println("Nie zaladowano ikony!");
+		}
+		this.icon = img;
 	}
 
 	public Truck(String regNr, boolean able, int capacity, int x, int y) {
 		super(capacity, x, y);
 		this.setRegNumber(regNr);
 		this.setAbleToWork(able);
+		Image img = null;
+		try {
+			if (this.isAbleToWork)
+				img = ImageIO.read(new File("./resources/truckAble.jpg"));
+			else
+				img = ImageIO.read(new File("./resources/truckDisabled.jpg"));
+		} catch (IOException e) {
+			System.out.println("Nie zaladowano ikony!");
+		}
+		this.icon = img;
 	}
 
 	@Override
@@ -57,6 +95,7 @@ public class Truck extends Vehicle {
 		else
 			g2d.setColor(Color.MAGENTA);
 		g2d.fillOval(this.getxCoord(), this.getyCoord(), 10, 10);
+		g.drawImage(this.icon, this.getxCoord(), this.getyCoord(), null);
 	}
 
 	public void move() {
@@ -73,7 +112,8 @@ public class Truck extends Vehicle {
 					this.setyCoord(getyCoord() + delta);
 				if (this.getyCoord() > yDest)
 					this.setyCoord(getyCoord() - delta);
-				if((Math.abs(this.getxCoord()-xDest)<5) && (Math.abs(this.getyCoord()-yDest)<5)) this.informAboutTheArrival(new VehicleArrivedEvent(this)); ;
+				if ((Math.abs(this.getxCoord() - xDest) < 5) && (Math.abs(this.getyCoord() - yDest) < 5))
+					this.informAboutTheArrival(new VehicleArrivedEvent(this));
 			}
 		}
 

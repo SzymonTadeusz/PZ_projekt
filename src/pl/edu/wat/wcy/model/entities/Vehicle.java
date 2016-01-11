@@ -3,9 +3,12 @@ package pl.edu.wat.wcy.model.entities;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.swing.JLabel;
 
 import pl.edu.wat.wcy.events.Arrivable;
 import pl.edu.wat.wcy.events.VehicleArrivedEvent;
@@ -20,6 +23,7 @@ public abstract class Vehicle implements Serializable {
 	private int yCoord;
 	private Transport transport;
 	private Arrivable listener;
+	protected Image icon;
 
 	public Vehicle() {
 		super();

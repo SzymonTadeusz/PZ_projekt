@@ -3,7 +3,14 @@ package pl.edu.wat.wcy.model.entities;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 import java.util.Set;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 import pl.edu.wat.wcy.events.VehicleArrivedEvent;
 
@@ -11,17 +18,31 @@ import pl.edu.wat.wcy.events.VehicleArrivedEvent;
 public class Airplane extends Vehicle {
 
 	private String name;
-
+	
 	public Airplane() {
 
 	}
 
 	public Airplane(String name) {
 		this.setName(name);
+		Image img = null;
+		try{
+		img = ImageIO.read(new File("./resources/airplane.jpg"));
+		}catch (IOException e) {
+			System.out.println("Nie zaladowano ikony!");
+		}
+		this.icon = img;
 	}
 
 	public Airplane(String name, int capacity, int x, int y, Set<Cargo> c, Transport t) {
 		super(capacity, x, y);
+		Image img = null;
+		try{
+		img = ImageIO.read(new File("./resources/airplane.jpg"));
+		}catch (IOException e) {
+			System.out.println("Nie zaladowano ikony!");
+		}
+		this.icon = img;
 		this.setName(name);
 		this.setCurrentCargo(c);
 		this.setTransport(t);
@@ -29,6 +50,13 @@ public class Airplane extends Vehicle {
 
 	public Airplane(String name, int capacity, int x, int y) {
 		super(capacity, x, y);
+		Image img = null;
+		try{
+		img = ImageIO.read(new File("./resources/airplane.jpg"));
+		}catch (IOException e) {
+			System.out.println("Nie zaladowano ikony!");
+		}
+		this.icon = img;
 		this.setName(name);
 	}
 
@@ -48,6 +76,8 @@ public class Airplane extends Vehicle {
 
 		g2d.setColor(Color.BLUE);
 		g2d.fillOval(this.getxCoord(), this.getyCoord(), 10, 10);
+		g.drawImage(this.icon, this.getxCoord(), this.getyCoord(), null);
+
 	}
 
 	public void move() {

@@ -34,12 +34,8 @@ public class CreateWindow {
 		buttonPanel.setSize(200, 600);
 		mapPanel.setSize(800, 600);
 		windowPanel.add(mapPanel, BorderLayout.CENTER);
+		if(Main.loggedUser.getRole().getRoleName()=="admin")
 		windowPanel.add(buttonPanel, BorderLayout.EAST);
-		JLabel l = new JLabel("Trwa ³adowanie danych z bazy, proszê czekaæ...");
-		l.setLocation(400, 280);
-		l.setSize(500, 50);
-		l.setVisible(true);
-		appWindow.getContentPane().add(l);
 		appWindow.getContentPane().add(windowPanel);
 		windowPanel.setVisible(false);
 		appWindow.setVisible(true);
@@ -553,6 +549,7 @@ public class CreateWindow {
 						v.setTransport(t);
 						v.setArrivalListener(t.getDestination());
 						t.getDestination().addToTransports(t);
+						Main.transportDao.current.addToTransports(t);
 						Main.getTransportDao().update(t);
 						Main.getVehicleDao().update(v);
 						System.out.println("Dodano:\n" + v);

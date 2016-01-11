@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping">
+<!-- Generated 2016-01-11 19:38:38 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="pl.edu.wat.wcy.model.entities.Role" table="ROLES">
+        <id name="roleID" type="int">
+            <column name="ROLEID" />
+            <generator class="increment" />
+        </id>
+        <property name="roleName" type="java.lang.String">
+            <column name="ROLENAME" />
+        </property>
+        <set name="setOfUsersWithThisRole" table="USER" inverse="false" lazy="true" cascade="all">
+            <key>
+                <column name="ROLEID" />
+            </key>
+            <one-to-many class="pl.edu.wat.wcy.model.entities.User" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,6 +1,23 @@
 package pl.edu.wat.wcy.main;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+
 import javax.persistence.PersistenceException;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.exception.SQLGrammarException;
 
 import pl.edu.wat.wcy.model.dao.*;
 import pl.edu.wat.wcy.model.entities.*;
@@ -14,24 +31,100 @@ public class Main {
 	public static WarehouseDao warehouseDao = new WarehouseDao();
 	public static DriverDao driverDao = new DriverDao();
 	public static CountryDao countryDao = new CountryDao();
+	public static RoleDao roleDao = new RoleDao();
+	public static UserDao userDao = new UserDao();
+	public static User loggedUser;
+	public static boolean isLoggedIn;
 
-	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		CreateWindow window = new CreateWindow();
-		addVehicles();
-		addDrivers();
-		addWarehouses();
-		addCargos();
-		for (Vehicle v : vehicleDao.getList()) {
-			Driver d = (Driver) driverDao.getList().get(vehicleDao.getList().indexOf(v));
-			Cargo c = (Cargo) cargoDao.getList().get(vehicleDao.getList().indexOf(v));
-			d.setDriverOf(v);
-			c.addToVehicles(v);
-			v.setCurrentDriver(d);
-		}
+		addUsers();
+		logInForm();
+	}
+
+	public static void addUsers() {
+		Role admin = new Role("admin");
+		Role user = new Role("user");
+		roleDao.create(admin);
+		roleDao.create(user);
+		User u1 = new User("admin", "sql", admin);
+		User u2 = new User("user", "sql", user);
+		userDao.create(u2);
+		userDao.create(u1);
+	}
+
+	public static void logInForm()
+	{
+		JPanel panel = new JPanel(new GridLayout(3,1));
+		JTextField textfieldLogin = new JTextField("Login", 15);
+		panel.add(textfieldLogin);
+		JTextField textfieldPassword = new JPasswordField("Hasło", 15);
+		panel.add(textfieldPassword);
+		JFrame addWindow = new JFrame("Zaloguj się do aplikacji");
+		JButton bt = new JButton("Zatwierdź");
+		bt.addActionListener(new ActionListener() {
+			@SuppressWarnings("unused")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String username = textfieldLogin.getText();
+				String password = textfieldPassword.getText();
+				addWindow.dispose();
+				if(logIn(username, password)==true)
+				{
+				CreateWindow window = new CreateWindow();
+				addVehicles();
+				addDrivers();
+				addWarehouses();
+				addCargos();
+				for (Vehicle v : vehicleDao.getList()) {
+					Driver d = (Driver) driverDao.getList().get(vehicleDao.getList().indexOf(v));
+					Cargo c = (Cargo) cargoDao.getList().get(vehicleDao.getList().indexOf(v));
+					d.setDriverOf(v);
+					c.addToVehicles(v);
+					v.setCurrentDriver(d);
+				}
+
+				CreateWindow.getWindowPanel().setVisible(true);
+				}
+				else 
+				{
+					System.out.println(" Zamykam aplikację.");
+					System.exit(1);
+				}
+			}
+		});
+
+		panel.add(bt, BorderLayout.AFTER_LAST_LINE);
+		addWindow.getContentPane().add(panel);
+		addWindow.setLocation(300,300);
+		addWindow.pack();
+		addWindow.setVisible(true);
 		
-		CreateWindow.getAppWindow().getContentPane().remove(0);
-		CreateWindow.getWindowPanel().setVisible(true);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static boolean logIn(String username, String password) {
+		User probablyUser = new User(username, password);
+		Session session = EMStorage.getEm().unwrap(Session.class);
+		Query q = session.createSQLQuery("SELECT u.userid FROM Users AS u WHERE u.name=\"" + probablyUser.getName()
+				+ "\" AND u.password = \"" + probablyUser.getPassword() + "\";");
+		List<Integer> result = null;
+		int resultid = 0;
+		try {
+			result = (List<Integer>) q.list();
+			resultid = result.get(0);
+			probablyUser = Main.userDao.retrieve(resultid);
+		} catch (SQLGrammarException e1) {
+			System.out.println("Błąd logowania!");
+		} catch (IndexOutOfBoundsException e1) {
+			System.out.println("Błąd logowania!");
+		}
+		if (result != null && result.size() == 1) {
+			System.out.println("Logowanie udane!");
+			Main.loggedUser = probablyUser;
+			return true;
+		} else
+			return false;
+
 	}
 
 	public static void addWarehouses() {
@@ -46,15 +139,14 @@ public class Main {
 		Country c9 = new Country("Austria ", "AT");
 		Country c10 = new Country("Inne    ", "--");
 
-	
-		Warehouse w = new Warehouse("Berlin, Weierstraße", 3, "Magazyn Berlin 1", 195, 165,c2);
+		Warehouse w = new Warehouse("Berlin, Weierstraße", 3, "Magazyn Berlin 1", 195, 165, c2);
 		Warehouse w2 = new Warehouse("Warszawa, Marszałkowska", 102, "Magazyn Warszawa 1", 505, 185, c1);
 		Warehouse w3 = new Warehouse("Wrocław, Pl. Katedralny", 1, "Magazyn Wrocław 1", 340, 260, c1);
 		Warehouse w4 = new Warehouse("Praha, Karluv Pl.", 30, "Magazyn Praga 1", 235, 325, c4);
-		Warehouse w5 = new Warehouse("Budapest, Szegetek", 1, "Magazyn Budapeszt 1", 430, 490,c7);
-		Warehouse w6 = new Warehouse("Львов, Вернигори", 11, "Magazyn Lwów 1", 630, 345,c6);
-		Warehouse w7 = new Warehouse("Vilnius, Šimašiusai", 25, "Magazyn Wilno 1", 685, 15,c3);
-		Warehouse w8 = new Warehouse("Stuttgart, Kohlstraße", 25, "Magazyn Stuttgart 1", 20, 410,c2);
+		Warehouse w5 = new Warehouse("Budapest, Szegetek", 1, "Magazyn Budapeszt 1", 430, 490, c7);
+		Warehouse w6 = new Warehouse("Львов, Вернигори", 11, "Magazyn Lwów 1", 630, 345, c6);
+		Warehouse w7 = new Warehouse("Vilnius, Šimašiusai", 25, "Magazyn Wilno 1", 685, 15, c3);
+		Warehouse w8 = new Warehouse("Stuttgart, Kohlstraße", 25, "Magazyn Stuttgart 1", 20, 410, c2);
 		try {
 			countryDao.create(c1);
 			countryDao.create(c2);
