@@ -7,13 +7,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.ConcurrentModificationException;
+import java.util.GregorianCalendar;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import pl.edu.wat.wcy.main.Main;
+import pl.edu.wat.wcy.model.entities.EventLog;
 import pl.edu.wat.wcy.model.entities.Vehicle;
 import pl.edu.wat.wcy.model.entities.Warehouse;
 
@@ -68,7 +71,9 @@ public class MapPanel extends JPanel implements ActionListener {
 		try {
 			bgImage = ImageIO.read(new File("./resources/bgMap.jpg"));
 		} catch (IOException e) {
-			System.out.println("Nie zaladowano mapy!");
+			Main.eventLog.warning("Nie zaladowano mapy!");
+			Calendar now = GregorianCalendar.getInstance();
+			Main.eventDao.create(new EventLog(now.getTime()+" WARN: " + Main.loggedUser.getName() + " - niepowodzenie ³adowania mapy."));
 		}
 		timer = new Timer(delay, this);
 		timer.start();

@@ -7,6 +7,9 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
@@ -14,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import pl.edu.wat.wcy.events.VehicleArrivedEvent;
+import pl.edu.wat.wcy.main.Main;
 
 @SuppressWarnings("serial")
 public class Truck extends Vehicle {
@@ -35,7 +39,9 @@ public class Truck extends Vehicle {
 			else
 				img = ImageIO.read(new File("./resources/truckDisabled.jpg"));
 		} catch (IOException e) {
-			System.out.println("Nie zaladowano ikony!");
+			Main.eventLog.warning("Nie zaladowano ikony!");
+			Calendar now = GregorianCalendar.getInstance();
+			Main.eventDao.create(new EventLog(now.getTime()+" WARN: " + Main.loggedUser.getName() + " - konstruktor Truck() - nie za³adowano ikony. Zalogowany user: "+Main.loggedUser.getName()));
 		}
 		this.icon = img;
 	}
@@ -53,7 +59,9 @@ public class Truck extends Vehicle {
 			else
 				img = ImageIO.read(new File("./resources/truckDisabled.jpg"));
 		} catch (IOException e) {
-			System.out.println("Nie zaladowano ikony!");
+			Main.eventLog.warning("Nie zaladowano ikony!");
+			Calendar now = GregorianCalendar.getInstance();
+			Main.eventDao.create(new EventLog(now.getTime()+"WARN: " + Main.loggedUser.getName() + " - konstruktor Truck() - nie za³adowano ikony. Zalogowany user: "+Main.loggedUser.getName()));
 		}
 		this.icon = img;
 	}
@@ -69,7 +77,9 @@ public class Truck extends Vehicle {
 			else
 				img = ImageIO.read(new File("./resources/truckDisabled.jpg"));
 		} catch (IOException e) {
-			System.out.println("Nie zaladowano ikony!");
+			Main.eventLog.warning("Nie zaladowano ikony!");
+			Calendar now = GregorianCalendar.getInstance();
+			Main.eventDao.create(new EventLog(now.getTime()+"WARN: " + Main.loggedUser.getName() + " - konstruktor Truck() - nie za³adowano ikony. Zalogowany user: "+Main.loggedUser.getName()));
 		}
 		this.icon = img;
 	}
