@@ -19,7 +19,15 @@ import pl.edu.wat.wcy.model.entities.*;
 public class CreateWindow {
 	static JFrame appWindow = new JFrame("PZ Projekt - Szymon Muszyñski");
 	static JPanel windowPanel = new JPanel(new BorderLayout());
-	static JPanel mapPanel = new MapPanel(new GridLayout());
+	static JPanel mapPanel = new MapPanel();
+	public static JPanel getMapPanel() {
+		return mapPanel;
+	}
+
+	public static void setMapPanel(JPanel mapPanel) {
+		CreateWindow.mapPanel = mapPanel;
+	}
+
 	static JPanel buttonPanel = new JPanel(new GridLayout(10, 2));
 
 	public CreateWindow() {

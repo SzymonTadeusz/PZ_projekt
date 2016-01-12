@@ -24,7 +24,7 @@ public abstract class Vehicle implements Serializable {
 	private Transport transport;
 	private Arrivable listener;
 	protected Image icon;
-	protected JLabel label;
+	public JLabel label;
 
 	public Vehicle() {
 		super();
