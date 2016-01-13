@@ -1,33 +1,24 @@
 package pl.edu.wat.wcy.model.entities;
 
+import java.util.HashSet;
 
 public class EventLog {
 
-	private int eventID;
-	private String event;
-
-	public EventLog() {
-	}
+	private int eventLogID;
+	private HashSet<String> events;
 	
-	public EventLog(String msg)
-	{
-		this.event = msg;
-	}
-
+	
 	public int getEventLogID() {
-		return eventID;
+		return eventLogID;
 	}
-
 	public void setEventLogID(int eventLogID) {
-		this.eventID = eventLogID;
+		this.eventLogID = eventLogID;
 	}
-
-	public String getEvent() {
-		return event;
+	public HashSet<String> getEvents() {
+		return events;
 	}
-
-	public void setEvent(String event) {
-		this.event = event;
-	}
-
+	public void setEvents(HashSet<String> events) {
+		this.events = events;
+	} 
+	
 }

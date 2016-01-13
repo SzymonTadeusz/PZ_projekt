@@ -1,16 +1,12 @@
 package pl.edu.wat.wcy.main;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 import javax.persistence.PersistenceException;
 import javax.swing.JButton;
@@ -37,28 +33,12 @@ public class Main {
 	public static CountryDao countryDao = new CountryDao();
 	public static RoleDao roleDao = new RoleDao();
 	public static UserDao userDao = new UserDao();
-	public static EventDao eventDao = new EventDao();
-
 	public static User loggedUser;
 	public static boolean isLoggedIn;
-	public static Logger eventLog = Logger.getLogger("PZProjekt_log");
 
-	
 	public static void main(String[] args) {
 		addUsers();
 		logInForm();
-		
-		try {
-			FileHandler fh;
-			fh = new FileHandler("./logZdarzen.log");
-			eventLog.addHandler(fh);
-			SimpleFormatter formatter = new SimpleFormatter();
-			fh.setFormatter(formatter);
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public static void addUsers() {
@@ -75,12 +55,11 @@ public class Main {
 	public static void logInForm()
 	{
 		JPanel panel = new JPanel(new GridLayout(3,1));
-		JTextField textfieldLogin = new JTextField("Login", 17);
+		JTextField textfieldLogin = new JTextField("Login", 15);
 		panel.add(textfieldLogin);
-		JTextField textfieldPassword = new JPasswordField("Hasło", 17);
+		JTextField textfieldPassword = new JPasswordField("Hasło", 15);
 		panel.add(textfieldPassword);
-		JFrame addWindow = new JFrame("Zaloguj");
-		addWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		JFrame addWindow = new JFrame("Zaloguj się do aplikacji");
 		JButton bt = new JButton("Zatwierdź");
 		bt.addActionListener(new ActionListener() {
 			@SuppressWarnings("unused")
@@ -108,9 +87,7 @@ public class Main {
 				}
 				else 
 				{
-					Main.eventLog.info(" Zamykam aplikację.");
-					Calendar now = GregorianCalendar.getInstance();
-					Main.eventDao.create(new EventLog(now.getTime()+" INFO: LogInForm() - zamknięto aplikację"));
+					System.out.println(" Zamykam aplikację.");
 					System.exit(1);
 				}
 			}
@@ -118,7 +95,7 @@ public class Main {
 
 		panel.add(bt, BorderLayout.AFTER_LAST_LINE);
 		addWindow.getContentPane().add(panel);
-		addWindow.setLocation(500,300);
+		addWindow.setLocation(300,300);
 		addWindow.pack();
 		addWindow.setVisible(true);
 		
@@ -137,18 +114,12 @@ public class Main {
 			resultid = result.get(0);
 			probablyUser = Main.userDao.retrieve(resultid);
 		} catch (SQLGrammarException e1) {
-			Main.eventLog.severe("Błąd logowania. Podane dane to - login: \"" + username + "\", hasło: \"" + password+"\"");
-			Calendar now = GregorianCalendar.getInstance();
-			Main.eventDao.create(new EventLog(now.getTime()+" ERROR: Błąd logowania. Podane dane to - login: \"" + username + "\", hasło: \"" + password+"\""));
+			System.out.println("Błąd logowania!");
 		} catch (IndexOutOfBoundsException e1) {
-			Main.eventLog.severe("Błąd logowania. Podane dane to - login: \"" + username + "\", hasło: \"" + password+"\"");
-			Calendar now = GregorianCalendar.getInstance();
-			Main.eventDao.create(new EventLog(now.getTime()+" ERROR: Błąd logowania. Podane dane to - login: \"" + username + "\", hasło: \"" + password+"\""));
+			System.out.println("Błąd logowania!");
 		}
 		if (result != null && result.size() == 1) {
-			Main.eventLog.info("Logowanie udane! Login: " + username + ", hasło: " + password + " (rola: "+probablyUser.getRole().getRoleName()+")");
-			Calendar now = GregorianCalendar.getInstance();
-			Main.eventDao.create(new EventLog(now.getTime()+" INFO: Logowanie udane! Login: " + username + ", hasło: " + password + " (rola: "+probablyUser.getRole().getRoleName()+")"));
+			System.out.println("Logowanie udane!");
 			Main.loggedUser = probablyUser;
 			return true;
 		} else
@@ -196,9 +167,7 @@ public class Main {
 			warehouseDao.create(w7);
 			warehouseDao.create(w8);
 		} catch (PersistenceException e) {
-			Main.eventLog.severe("Blad Hibernate'a: " + e.getMessage());
-			Calendar now = GregorianCalendar.getInstance();
-			Main.eventDao.create(new EventLog(now.getTime()+" ERROR: tworzenie wstępnych magazynów."));			
+			System.out.println("Blad Hibernate'a: " + e.getMessage());
 		}
 	}
 
@@ -217,9 +186,7 @@ public class Main {
 			cargoDao.create(c5);
 			cargoDao.create(c6);
 		} catch (PersistenceException e) {
-			Main.eventLog.severe("Blad Hibernate'a: " + e.getMessage());
-			Calendar now = GregorianCalendar.getInstance();
-			Main.eventDao.create(new EventLog(now.getTime()+" ERROR: tworzenie wstępnych towarów."));
+			System.out.println("Blad Hibernate'a: " + e.getMessage());
 		}
 	}
 
@@ -238,9 +205,7 @@ public class Main {
 			vehicleDao.create(sam2);
 			vehicleDao.create(tir4);
 		} catch (PersistenceException e) {
-			Main.eventLog.severe("Blad Hibernate'a: " + e.getMessage());
-			Calendar now = GregorianCalendar.getInstance();
-			Main.eventDao.create(new EventLog(now.getTime()+" ERROR: tworzenie wstępnych pojazdów."));
+			System.out.println("Blad Hibernate'a: " + e.getMessage());
 		}
 	}
 
@@ -260,9 +225,7 @@ public class Main {
 			driverDao.create(d5);
 			driverDao.create(d6);
 		} catch (PersistenceException e) {
-			Main.eventLog.severe("Blad Hibernate'a: " + e.getMessage());
-			Calendar now = GregorianCalendar.getInstance();
-			Main.eventDao.create(new EventLog(now.getTime()+" ERROR: tworzenie wstępnych kierowców."));
+			System.out.println("Blad Hibernate'a: " + e.getMessage());
 		}
 	}
 

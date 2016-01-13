@@ -1,12 +1,18 @@
 package pl.edu.wat.wcy.model.dao;
 
 import java.util.ArrayList;
-import pl.edu.wat.wcy.main.Main;
 
 public class GenericDaoImpl<T> implements GenericDao<T> {
 
 	Class<T> type;
 	private ArrayList<T> list;
+	// public GenericDaoImpl() {
+	// super();
+	// em.isOpen();
+	// Type t = getClass().getGenericSuperclass();
+	// ParameterizedType pt = (ParameterizedType)t;
+	// type = (Class)pt.getActualTypeArguments()[0];
+	// }
 
 	public GenericDaoImpl(Class<T> type) {
 		super();
@@ -16,14 +22,14 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
 
 	@Override
 	public T create(T t) {
-		try {
+	//	try {
 			EMStorage.getEm().getTransaction().begin();
 			EMStorage.getEm().persist(t);
 			EMStorage.getEm().getTransaction().commit();
 			list.add(t);
-		} catch (Exception e) {
-			Main.eventLog.severe("Blad tworzenia: " + e.getMessage());
-			}
+//		} catch (Exception e) {
+//			System.out.println("Blad tworzenia: " + e.getMessage());
+	//	}
 		return t;
 	}
 
@@ -36,8 +42,8 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
 			EMStorage.getEm().getTransaction().commit();
 			list.remove(deleted);
 		} catch (Exception e) {
-			Main.eventLog.severe("Blad usuwania: " + e.getMessage());
-			}
+			System.out.println("Blad usuwania: " + e.getMessage());
+		}
 	}
 
 	@Override
@@ -52,8 +58,8 @@ public class GenericDaoImpl<T> implements GenericDao<T> {
 			EMStorage.getEm().merge(t);
 			EMStorage.getEm().getTransaction().commit();
 		} catch (Exception e) {
-			Main.eventLog.severe("Blad aktualizacji: " + e.getMessage());
-			}
+			System.out.println("Blad aktualizacji: " + e.getMessage());
+		}
 		return t;
 	}
 

@@ -4,12 +4,15 @@
 <!-- Generated 2016-01-06 19:22:53 by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
     <class name="pl.edu.wat.wcy.model.entities.EventLog" table="EVENTLOG">
-        <id name="eventID" type="int" access="field">
+        <id name="eventLogID" type="int" access="field">
             <column name="ID" />
             <generator class="increment" />
         </id>
-      <property name="event" type="java.lang.String" access="field">
-            <column name="EVENT" length="1000" />
-      </property>
+        <set name="events" table="EVENTS" inverse="false" lazy="false" cascade="all" access="field">
+            <key>
+                <column name="event_id" />
+            </key>
+                <element type="text"/>
+        </set>
     </class>
 </hibernate-mapping>
