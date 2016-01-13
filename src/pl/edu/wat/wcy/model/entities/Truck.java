@@ -1,10 +1,14 @@
 package pl.edu.wat.wcy.model.entities;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Set;
 
@@ -14,7 +18,6 @@ import javax.swing.JLabel;
 
 import pl.edu.wat.wcy.events.VehicleArrivedEvent;
 import pl.edu.wat.wcy.main.Main;
-import pl.edu.wat.wcy.view.CreateWindow;
 
 @SuppressWarnings("serial")
 public class Truck extends Vehicle {
@@ -38,15 +41,9 @@ public class Truck extends Vehicle {
 		} catch (IOException e) {
 			Main.eventLog.warning("Nie zaladowano ikony!");
 			Calendar now = GregorianCalendar.getInstance();
-			Main.eventDao.create(new EventLog(now.getTime() + " WARN: " + Main.loggedUser.getName()
-					+ " - konstruktor Truck() - nie za³adowano ikony. Zalogowany user: " + Main.loggedUser.getName()));
+			Main.eventDao.create(new EventLog(now.getTime()+" WARN: " + Main.loggedUser.getName() + " - konstruktor Truck() - nie za³adowano ikony. Zalogowany user: "+Main.loggedUser.getName()));
 		}
 		this.icon = img;
-		ImageIcon i = new ImageIcon(img);
-		this.label = new JLabel(i);
-		this.label.setSize(30, 30);
-		this.label.setVisible(true);
-		CreateWindow.getMapPanel().add(this.label);
 	}
 
 	public Truck(String regNr, boolean able, int capacity, int x, int y, Set<Cargo> c, Transport t) {
@@ -64,15 +61,9 @@ public class Truck extends Vehicle {
 		} catch (IOException e) {
 			Main.eventLog.warning("Nie zaladowano ikony!");
 			Calendar now = GregorianCalendar.getInstance();
-			Main.eventDao.create(new EventLog(now.getTime() + "WARN: " + Main.loggedUser.getName()
-					+ " - konstruktor Truck() - nie za³adowano ikony. Zalogowany user: " + Main.loggedUser.getName()));
+			Main.eventDao.create(new EventLog(now.getTime()+"WARN: " + Main.loggedUser.getName() + " - konstruktor Truck() - nie za³adowano ikony. Zalogowany user: "+Main.loggedUser.getName()));
 		}
 		this.icon = img;
-		ImageIcon i = new ImageIcon(img);
-		this.label = new JLabel(i);
-		this.label.setSize(30, 30);
-		this.label.setVisible(true);
-		CreateWindow.getMapPanel().add(this.label);
 	}
 
 	public Truck(String regNr, boolean able, int capacity, int x, int y) {
@@ -88,15 +79,9 @@ public class Truck extends Vehicle {
 		} catch (IOException e) {
 			Main.eventLog.warning("Nie zaladowano ikony!");
 			Calendar now = GregorianCalendar.getInstance();
-			Main.eventDao.create(new EventLog(now.getTime() + "WARN: " + Main.loggedUser.getName()
-					+ " - konstruktor Truck() - nie za³adowano ikony. Zalogowany user: " + Main.loggedUser.getName()));
+			Main.eventDao.create(new EventLog(now.getTime()+"WARN: " + Main.loggedUser.getName() + " - konstruktor Truck() - nie za³adowano ikony. Zalogowany user: "+Main.loggedUser.getName()));
 		}
 		this.icon = img;
-		ImageIcon i = new ImageIcon(img);
-		this.label = new JLabel(i);
-		this.label.setSize(30, 30);
-		this.label.setVisible(true);
-		CreateWindow.getMapPanel().add(this.label);
 	}
 
 	@Override
@@ -113,22 +98,14 @@ public class Truck extends Vehicle {
 				+ this.getCurrentDriver() + ". Przewozi: " + cargo);
 	}
 
-	public String toTooltipText() {
-		String cargo = " {";
-		String sprawny = " ";
-		sprawny = (this.isAbleToWork == true) ? " sprawny" : " niesprawny";
-		if (this.getCurrentCargo() != null)
-			for (Cargo c : this.getCurrentCargo())
-				cargo += (c + " ");
-		cargo += "}";
-		return ("<html>" + sprawny + " TIR - nr: " + this.getRegNumber() + "     (" + this.getxCoord() + ","
-				+ this.getyCoord() + ")<br>pojemnosc: " + this.getCapacity() + "<br>kierowca: "
-				+ this.getCurrentDriver() + "<br>Przewozi: " + cargo + "</html>");
-	}
-
 	public void paint(Graphics g) {
-		this.label.setToolTipText(this.toTooltipText());
-		this.label.setLocation(this.getxCoord(), this.getyCoord());
+		Graphics2D g2d = (Graphics2D) g;
+		if (this.isAbleToWork == true)
+			g2d.setColor(Color.GREEN);
+		else
+			g2d.setColor(Color.MAGENTA);
+		g2d.fillOval(this.getxCoord(), this.getyCoord(), 10, 10);
+		g.drawImage(this.icon, this.getxCoord(), this.getyCoord(), null);
 	}
 
 	public void move() {
