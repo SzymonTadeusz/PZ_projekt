@@ -23,7 +23,7 @@ public abstract class Vehicle implements Serializable {
 	private int yCoord;
 	private Transport transport;
 	private Arrivable listener;
-	protected Image icon;
+	public Image icon;
 	protected JLabel label;
 
 	public Vehicle() {

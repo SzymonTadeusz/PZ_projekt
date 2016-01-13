@@ -11,9 +11,6 @@ import java.util.GregorianCalendar;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-
 import pl.edu.wat.wcy.events.VehicleArrivedEvent;
 import pl.edu.wat.wcy.main.Main;
 

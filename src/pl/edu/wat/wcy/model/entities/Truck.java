@@ -4,19 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Random;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-
-import pl.edu.wat.wcy.events.VehicleArrivedEvent;
+import pl.edu.wat.wcy.events.*;
 import pl.edu.wat.wcy.main.Main;
 
 @SuppressWarnings("serial")
@@ -111,6 +107,7 @@ public class Truck extends Vehicle {
 	public void move() {
 		if (this.getTransport() != null && this.getTransport().getDestination() != null) {
 			if (this.isAbleToWork == true) {
+				Random rand = new Random();
 				int delta = 3;
 				int xDest = this.getTransport().getDestination().getxCoord();
 				int yDest = this.getTransport().getDestination().getyCoord();
@@ -124,6 +121,10 @@ public class Truck extends Vehicle {
 					this.setyCoord(getyCoord() - delta);
 				if ((Math.abs(this.getxCoord() - xDest) < 5) && (Math.abs(this.getyCoord() - yDest) < 5))
 					this.informAboutTheArrival(new VehicleArrivedEvent(this));
+				if(rand.nextInt(100)==0) {
+					new VehicleDamagedEvent(this);
+					this.setAbleToWork(false);
+				}
 			}
 		}
 

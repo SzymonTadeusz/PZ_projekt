@@ -24,7 +24,7 @@ public interface Arrivable {
 		e.getVehicleArrived().setCurrentCargo(null);
 		e.getVehicleArrived().setArrivalListener(null);
 		e.getVehicleArrived().setTransport(null);
-		Main.getVehicleDao().update(e.getVehicleArrived());
+		Main.getVehicleDao().update(e.getVehicleArrived()); 
 	}
 
 }

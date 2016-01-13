@@ -229,7 +229,7 @@ public class Main {
 		Truck tir2 = new Truck("WB99102", true, 1000, 100, 100);
 		Truck tir3 = new Truck("NO1503C", true, 5000, 505, 195);
 		Airplane sam2 = new Airplane("Airbus 150", 10000, 440, 500);
-		Truck tir4 = new Truck("CT13021", false, 1000, 515, 195);
+		Truck tir4 = new Truck("CT13021", true, 1000, 515, 195);
 		try {
 			vehicleDao.create(tir1);
 			vehicleDao.create(sam);
