@@ -49,7 +49,6 @@ public class MapPanel extends JPanel implements ActionListener {
 			g.drawImage(bgImage, 0, 0, null);
 			for (Vehicle v : Main.getVehicleDao().getList()) {
 				v.move();
-				v.paint(g);
 			}
 			for (Warehouse w : Main.getWarehouseDao().getList()) {
 				w.paint(g);
@@ -60,7 +59,12 @@ public class MapPanel extends JPanel implements ActionListener {
 
 	public void actionPerformed(ActionEvent ev) {
 		if (ev.getSource() == timer) {
+			for (Vehicle v : Main.getVehicleDao().getList()){
+				v.label.setLocation(v.getxCoord(), v.getyCoord());
+				v.label.setToolTipText(v.toTooltip());
 			repaint();
+			}
+			
 		}
 	}
 

@@ -1,8 +1,5 @@
 package pl.edu.wat.wcy.model.entities;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +31,7 @@ public class Airplane extends Vehicle {
 			Main.eventDao.create(new EventLog(now.getTime()+" WARN: " + Main.loggedUser.getName() + " - konstruktor Airplane() - nie za³adowano ikony. Zalogowany user: "+Main.loggedUser.getName()));
 		}
 		this.icon = img;
+		setIcon(img, this.toString());
 	}
 
 	public Airplane(String name, int capacity, int x, int y, Set<Cargo> c, Transport t) {
@@ -50,6 +48,7 @@ public class Airplane extends Vehicle {
 		this.setName(name);
 		this.setCurrentCargo(c);
 		this.setTransport(t);
+		this.setIcon(img, toTooltip());
 	}
 
 	public Airplane(String name, int capacity, int x, int y) {
@@ -64,6 +63,7 @@ public class Airplane extends Vehicle {
 		}
 		this.icon = img;
 		this.setName(name);
+		this.setIcon(img, toTooltip());
 	}
 
 	@Override
@@ -77,13 +77,14 @@ public class Airplane extends Vehicle {
 				+ ". Przewozi: {" + cargo + "}");
 	}
 
-	public void paint(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g;
-
-		g2d.setColor(Color.BLUE);
-		g2d.fillOval(this.getxCoord(), this.getyCoord(), 10, 10);
-		g.drawImage(this.icon, this.getxCoord(), this.getyCoord(), null);
-
+	public String toTooltip(){
+		String cargo = " ";
+		if (this.getCurrentCargo() != null)
+			for (Cargo c : this.getCurrentCargo())
+				cargo += (c + " ");
+		return ("<html>SAMOLOT - nazwa: " + this.name + " (" + this.getxCoord() + ","
+				+ this.getyCoord() + ")<br>pojemnosc: " + this.getCapacity() + ", kierowca: " + this.getCurrentDriver()
+				+ "<br>Przewozi: {" + cargo + "}</html>");
 	}
 
 	public void move() {

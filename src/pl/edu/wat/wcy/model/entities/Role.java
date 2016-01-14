@@ -8,13 +8,17 @@ public class Role {
 	private int roleID;
 	private String roleName;
 	private Set<User> setOfUsersWithThisRole = new HashSet<User>();
-	
-	public Role()
-	{}
-	
-	public Role(String name)
-	{
+
+	public Role() {
+	}
+
+	public Role(String name) {
 		this.setRoleName(name);
+	}
+
+	@Override
+	public String toString() {
+		return this.roleName;
 	}
 
 	public String getRoleName() {
@@ -33,16 +37,14 @@ public class Role {
 		this.setOfUsersWithThisRole = setOfUsersWithThisRole;
 	}
 
-	public void addToSet(User u)
-	{
+	public void addToSet(User u) {
 		this.setOfUsersWithThisRole.add(u);
 	}
-	
-	public void removeFromSet(User u)
-	{
+
+	public void removeFromSet(User u) {
 		this.setOfUsersWithThisRole.remove(u);
 	}
-	
+
 	public int getRoleID() {
 		return roleID;
 	}
@@ -50,7 +52,5 @@ public class Role {
 	public void setRoleID(int roleID) {
 		this.roleID = roleID;
 	}
-	
-	
-	
+
 }

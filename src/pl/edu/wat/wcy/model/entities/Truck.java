@@ -1,8 +1,5 @@
 package pl.edu.wat.wcy.model.entities;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
@@ -37,9 +34,11 @@ public class Truck extends Vehicle {
 		} catch (IOException e) {
 			Main.eventLog.warning("Nie zaladowano ikony!");
 			Calendar now = GregorianCalendar.getInstance();
-			Main.eventDao.create(new EventLog(now.getTime()+" WARN: " + Main.loggedUser.getName() + " - konstruktor Truck() - nie za³adowano ikony. Zalogowany user: "+Main.loggedUser.getName()));
+			Main.eventDao.create(new EventLog(now.getTime() + " WARN: " + Main.loggedUser.getName()
+					+ " - konstruktor Truck() - nie za³adowano ikony. Zalogowany user: " + Main.loggedUser.getName()));
 		}
 		this.icon = img;
+		this.setIcon(img, toTooltip());
 	}
 
 	public Truck(String regNr, boolean able, int capacity, int x, int y, Set<Cargo> c, Transport t) {
@@ -57,9 +56,11 @@ public class Truck extends Vehicle {
 		} catch (IOException e) {
 			Main.eventLog.warning("Nie zaladowano ikony!");
 			Calendar now = GregorianCalendar.getInstance();
-			Main.eventDao.create(new EventLog(now.getTime()+"WARN: " + Main.loggedUser.getName() + " - konstruktor Truck() - nie za³adowano ikony. Zalogowany user: "+Main.loggedUser.getName()));
+			Main.eventDao.create(new EventLog(now.getTime() + "WARN: " + Main.loggedUser.getName()
+					+ " - konstruktor Truck() - nie za³adowano ikony. Zalogowany user: " + Main.loggedUser.getName()));
 		}
 		this.icon = img;
+		this.setIcon(img, toTooltip());
 	}
 
 	public Truck(String regNr, boolean able, int capacity, int x, int y) {
@@ -75,9 +76,11 @@ public class Truck extends Vehicle {
 		} catch (IOException e) {
 			Main.eventLog.warning("Nie zaladowano ikony!");
 			Calendar now = GregorianCalendar.getInstance();
-			Main.eventDao.create(new EventLog(now.getTime()+"WARN: " + Main.loggedUser.getName() + " - konstruktor Truck() - nie za³adowano ikony. Zalogowany user: "+Main.loggedUser.getName()));
+			Main.eventDao.create(new EventLog(now.getTime() + "WARN: " + Main.loggedUser.getName()
+					+ " - konstruktor Truck() - nie za³adowano ikony. Zalogowany user: " + Main.loggedUser.getName()));
 		}
 		this.icon = img;
+		this.setIcon(img, toTooltip());
 	}
 
 	@Override
@@ -94,14 +97,16 @@ public class Truck extends Vehicle {
 				+ this.getCurrentDriver() + ". Przewozi: " + cargo);
 	}
 
-	public void paint(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g;
-		if (this.isAbleToWork == true)
-			g2d.setColor(Color.GREEN);
-		else
-			g2d.setColor(Color.MAGENTA);
-		g2d.fillOval(this.getxCoord(), this.getyCoord(), 10, 10);
-		g.drawImage(this.icon, this.getxCoord(), this.getyCoord(), null);
+	public String toTooltip() {
+		String cargo = " ";
+		String sprawny = " ";
+		sprawny = (this.isAbleToWork == true) ? " sprawny" : " niesprawny";
+		if (this.getCurrentCargo() != null)
+			for (Cargo c : this.getCurrentCargo())
+				cargo += (c + " ");
+		return ("<html>" + sprawny + " TIR - nr: " + this.getRegNumber() + " (" + this.getxCoord() + ","
+				+ this.getyCoord() + ")<br>pojemnosc: " + this.getCapacity() + ", kierowca: " + this.getCurrentDriver()
+				+ "<br>Przewozi: {" + cargo + "}</html>");
 	}
 
 	public void move() {
@@ -121,7 +126,7 @@ public class Truck extends Vehicle {
 					this.setyCoord(getyCoord() - delta);
 				if ((Math.abs(this.getxCoord() - xDest) < 5) && (Math.abs(this.getyCoord() - yDest) < 5))
 					this.informAboutTheArrival(new VehicleArrivedEvent(this));
-				if(rand.nextInt(100)==0) {
+				if (rand.nextInt(100) == 0) {
 					new VehicleDamagedEvent(this);
 					this.setAbleToWork(false);
 				}

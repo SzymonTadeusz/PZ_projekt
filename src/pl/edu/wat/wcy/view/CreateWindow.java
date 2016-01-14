@@ -8,8 +8,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
 import javax.swing.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.plaf.metal.MetalTheme;
+import javax.swing.plaf.metal.OceanTheme;
+
 import org.hibernate.HibernateException;
 
 import pl.edu.wat.wcy.main.Main;
@@ -19,8 +24,18 @@ import pl.edu.wat.wcy.model.entities.*;
 public class CreateWindow {
 	static JFrame appWindow = new JFrame("PZ Projekt - Szymon Muszyñski");
 	static JPanel windowPanel = new JPanel(new BorderLayout());
-	static JPanel mapPanel = new MapPanel(new GridLayout());
+	static JPanel mapPanel = new MapPanel();
+
+	static DefaultListModel<String> listofDoneModel = new DefaultListModel<String>();
+	static JList<String> listOfDone = new JList<String>(listofDoneModel);
+
+	public static JPanel getMapPanel() {
+		return mapPanel;
+	}
+
 	static JPanel buttonPanel = new JPanel(new GridLayout(10, 2));
+	static JPanel buttonWholePanel = new JPanel(new BorderLayout());
+
 
 	public CreateWindow() {
 		addButtons();
@@ -31,14 +46,33 @@ public class CreateWindow {
 
 	public static void initializeWindowParameters() {
 		appWindow.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		appWindow.setSize(1120, 640);
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e3) {
+			// TODO Auto-generated catch block
+			e3.printStackTrace();
+		} catch (InstantiationException e3) {
+			// TODO Auto-generated catch block
+			e3.printStackTrace();
+		} catch (IllegalAccessException e3) {
+			// TODO Auto-generated catch block
+			e3.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e3) {
+			// TODO Auto-generated catch block
+			e3.printStackTrace();
+		}
+		appWindow.setSize(1280, 640);
 		appWindow.setLocation(100, 50);
 		appWindow.setResizable(false);
-		buttonPanel.setSize(200, 600);
+		buttonPanel.setSize(200, 500);
 		mapPanel.setSize(800, 600);
 		windowPanel.add(mapPanel, BorderLayout.CENTER);
-		windowPanel.add(buttonPanel, BorderLayout.EAST);
-		appWindow.getContentPane().add(windowPanel);
+		buttonWholePanel.add(buttonPanel, BorderLayout.NORTH);
+		buttonWholePanel.add(listOfDone);
+		buttonWholePanel.setVisible(true);
+		buttonWholePanel.setSize(200, 600);
+		appWindow.getContentPane().add(windowPanel);//,BorderLayout.WEST);
+		appWindow.getContentPane().add(buttonWholePanel,BorderLayout.EAST);
 		windowPanel.setVisible(false);
 		appWindow.setVisible(true);
 		appWindow.addWindowListener(new WindowAdapter() {
@@ -46,18 +80,20 @@ public class CreateWindow {
 				Main.eventLog.info("**********************************\n" + "Zamykam polaczenie oraz aplikacje.\n"
 						+ "**********************************");
 				Calendar now = GregorianCalendar.getInstance();
-				Main.eventDao.create(new EventLog(now.getTime()+" INFO: Zamkniêcie po³¹czenia w normalnym trybie."));
+				Main.eventDao.create(new EventLog(now.getTime() + " INFO: Zamkniêcie po³¹czenia w normalnym trybie."));
 				try {
 					EMStorage.getEm().close();
 					EMStorage.getEmf().close();
 				} catch (HibernateException e1) {
 					Main.eventLog.severe("Blad Hibernate'a!");
 					now = GregorianCalendar.getInstance();
-					Main.eventDao.create(new EventLog(now.getTime()+" ERROR: " + Main.loggedUser.getName() + " - Zamkniêcie po³¹czenia w normalnym trybie."));
-					} catch (IllegalStateException e2) {
+					Main.eventDao.create(new EventLog(now.getTime() + " ERROR: " + Main.loggedUser.getName()
+							+ " - Zamkniêcie po³¹czenia w normalnym trybie."));
+				} catch (IllegalStateException e2) {
 					Main.eventLog.severe("Blad - menedzer zostal wczesniej zamkniety!");
 					now = GregorianCalendar.getInstance();
-					Main.eventDao.create(new EventLog(now.getTime()+" ERROR: " + Main.loggedUser.getName() + " - Zamkniêcie po³¹czenia w normalnym trybie."));
+					Main.eventDao.create(new EventLog(now.getTime() + " ERROR: " + Main.loggedUser.getName()
+							+ " - Zamkniêcie po³¹czenia w normalnym trybie."));
 				} finally {
 					System.exit(0);
 				}
@@ -82,24 +118,48 @@ public class CreateWindow {
 	}
 
 	public static void addButtons() {
-		if(Main.loggedUser.getRole().getRoleName()=="admin")
-		{
-		addDriverButton();
-		removeDriverButton();
-		addVehicleButton();
-		removeVehicleButton();
+		listOfDone.setSize(300, 200);
+		listOfDone.setAutoscrolls(true);
+		listOfDone.setVisible(true);
+		
+		switch (Main.loggedUser.getRole().getRoleName()) {
+		case ("admin"): {
+			addDriverButton();
+			removeDriverButton();
+			addVehicleButton();
+			removeVehicleButton();
+			addDriverToVehicleButton();
+			removeDriverFromVehicleButton();
+			addWarehouseButton();
+			removeWarehouseButton();
+			addCargoButton();
+			removeCargoButton();
+			addTransportButton();
+			addTransportToVehicleButton();
+			addUser();
+			addCargoToVehicleButton();
+		//	windowPanel.add(listOfDone,BorderLayout.SOUTH);
+			windowPanel.revalidate();
+			windowPanel.repaint();
+			break;
 		}
-		addCargoToVehicleButton();
-		addDriverToVehicleButton();
-		if(Main.loggedUser.getRole().getRoleName()=="admin")
-		{
-		addWarehouseButton();
-		removeWarehouseButton();
-		addCargoButton();
-		removeCargoButton();
+		case ("user"): {
+			addDriverButton();
+			addVehicleButton();
+			addDriverToVehicleButton();
+			removeDriverFromVehicleButton();
+			addWarehouseButton();
+			addCargoButton();
+			addCargoToVehicleButton();
+			addTransportToVehicleButton();
+			addTransportButton();
+			selectAllButton();
+			showTransportHistoryButton();
+			windowPanel.revalidate();
+			windowPanel.repaint();
+			break;
 		}
-		addTransportButton();
-		addTransportToVehicleButton();
+		}
 	}
 
 	public static void addDriverButton() {
@@ -125,8 +185,10 @@ public class CreateWindow {
 								textFieldID.getText(), textFieldDrvLic.getText());
 						Main.getDriverDao().create(d);
 						Main.eventLog.info("Dodano kierowcê: " + d);
+						listofDoneModel.add(0,"Dodano kierowcê: " + d);
 						Calendar now = GregorianCalendar.getInstance();
-						Main.eventDao.create(new EventLog(now.getTime()+" INFO: " + Main.loggedUser.getName() + " - Dodanie kierowcy " + d));
+						Main.eventDao.create(new EventLog(
+								now.getTime() + " INFO: " + Main.loggedUser.getName() + " - Dodanie kierowcy " + d));
 						addWindow.dispose();
 					}
 				});
@@ -162,8 +224,10 @@ public class CreateWindow {
 						Main.getDriverDao().update(d);
 						Main.getDriverDao().delete(((Driver) driverBox.getSelectedItem()).getDriverID());
 						Main.eventLog.info("Usuniêto kierowcê " + d + "  z bazy.");
+						listofDoneModel.add(0,"Usuniêto kierowcê " + d + "  z bazy.");
 						Calendar now = GregorianCalendar.getInstance();
-						Main.eventDao.create(new EventLog(now.getTime()+" INFO: " + Main.loggedUser.getName() + " - Usuwanie kierowcy " + d));
+						Main.eventDao.create(new EventLog(
+								now.getTime() + " INFO: " + Main.loggedUser.getName() + " - Usuwanie kierowcy " + d));
 						addWindow.dispose();
 					}
 				});
@@ -214,13 +278,16 @@ public class CreateWindow {
 					public void actionPerformed(ActionEvent e) {
 						int cap, x, y;
 						try {
-							cap = Integer.parseInt(textFieldCapacity.getText());
 							x = Integer.parseInt(textFieldX.getText());
 							y = Integer.parseInt(textFieldY.getText());
 						} catch (NumberFormatException exc) {
-							cap = 10000;
 							x = 200;
 							y = 200;
+						}
+						try {
+							cap = Integer.parseInt(textFieldCapacity.getText());
+							} catch (NumberFormatException exc) {
+							cap = 10000;
 						}
 						Vehicle d;
 						if (checkBoxType.isSelected())
@@ -229,8 +296,11 @@ public class CreateWindow {
 							d = new Airplane(textFieldRegNr.getText(), cap, x, y);
 						Main.getVehicleDao().create(d);
 						Main.eventLog.info("Dodano pojazd: " + d);
+						listofDoneModel.add(0,"Dodano pojazd: " + d);
+
 						Calendar now = GregorianCalendar.getInstance();
-						Main.eventDao.create(new EventLog(now.getTime()+" INFO: " + Main.loggedUser.getName() + " - Dodanie nowego pojazdu " + d));
+						Main.eventDao.create(new EventLog(now.getTime() + " INFO: " + Main.loggedUser.getName()
+								+ " - Dodanie nowego pojazdu " + d));
 						addWindow.dispose();
 
 					}
@@ -265,9 +335,14 @@ public class CreateWindow {
 						v.setCurrentDriver(null); // najpierw usun powiazanie
 						Main.getVehicleDao().update(v);
 						Main.getVehicleDao().delete(((Vehicle) vehicleBox.getSelectedItem()).getVehicleID());
-						Main.eventLog.info("Usuniêto pojazd " + v +" z bazy.");
+						Main.getVehicleDao().getList().remove(v);
+						Main.eventLog.info("Usuniêto pojazd " + v + " z bazy.");
+						listofDoneModel.add(0,"Usuniêto pojazd " + v + " z bazy.");
+
+						v.label.setVisible(false);
 						Calendar now = GregorianCalendar.getInstance();
-						Main.eventDao.create(new EventLog(now.getTime()+" INFO: " + Main.loggedUser.getName() + " - Usuwanie pojazdu "+v));
+						Main.eventDao.create(new EventLog(
+								now.getTime() + " INFO: " + Main.loggedUser.getName() + " - Usuwanie pojazdu " + v));
 						addWindow.dispose();
 					}
 				});
@@ -281,8 +356,8 @@ public class CreateWindow {
 	}
 
 	public static void addDriverToVehicleButton() {
-		JButton addNewCargo = new JButton("PRZYDZIEL KIEROWCÊ");
-		addNewCargo.addActionListener(new ActionListener() {
+		JButton addDriverToVehicle = new JButton("PRZYDZIEL KIEROWCÊ");
+		addDriverToVehicle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JPanel panel = new JPanel(new BorderLayout());
@@ -299,13 +374,57 @@ public class CreateWindow {
 					public void actionPerformed(ActionEvent e) {
 						Driver d = (Driver) driverBox.getSelectedItem();
 						Vehicle v = (Vehicle) vehicleBox.getSelectedItem();
+						if(d.getDriverOf()!=null)d.getDriverOf().setCurrentDriver(null);
 						d.setDriverOf(v);
 						v.setCurrentDriver(d);
 						Main.getDriverDao().update(d);
 						Main.getVehicleDao().update(v);
 						Main.eventLog.info("Zmodyfikowano:\n" + v);
+						listofDoneModel.add(0,"Zmodyfikowano:\n" + v);
+
 						Calendar now = GregorianCalendar.getInstance();
-						Main.eventDao.create(new EventLog(now.getTime()+" INFO: " + Main.loggedUser.getName() + " - Dodanie kierowcy do pojazdu: " + v));
+						Main.eventDao.create(new EventLog(now.getTime() + " INFO: " + Main.loggedUser.getName()
+								+ " - Dodanie kierowcy do pojazdu: " + v));
+						addWindow.dispose();
+					}
+				});
+
+				panel.add(bt, BorderLayout.EAST);
+				addWindow.getContentPane().add(panel);
+				addWindow.pack();
+				addWindow.setVisible(true);
+			}
+		});
+		buttonPanel.add(addDriverToVehicle);
+	}
+
+	public static void removeDriverFromVehicleButton() {
+		JButton addNewCargo = new JButton("OD£¥CZ KIEROWCÊ");
+		addNewCargo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JPanel panel = new JPanel(new BorderLayout());
+				JComboBox<Vehicle> vehicleBox = new JComboBox<Vehicle>((Vehicle[]) Main.getVehicleDao().getList()
+						.toArray(new Vehicle[Main.getVehicleDao().getList().size()]));
+				panel.add(vehicleBox, BorderLayout.CENTER);
+				JFrame addWindow = new JFrame("Od³¹cz kierowcê od samochodu");
+				JButton bt = new JButton("ZatwierdŸ");
+				bt.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						Vehicle v = (Vehicle) vehicleBox.getSelectedItem();
+						Main.getDriverDao().update(v.getCurrentDriver());
+						if(v.getCurrentDriver()!=null){
+						v.getCurrentDriver().setDriverOf(null);
+						v.setCurrentDriver(null);
+						}
+						Main.getVehicleDao().update(v);
+						Main.eventLog.info("Zmodyfikowano:\n" + v);
+						listofDoneModel.add(0,"Zmodyfikowano:\n" + v);
+
+						Calendar now = GregorianCalendar.getInstance();
+						Main.eventDao.create(new EventLog(now.getTime() + " INFO: " + Main.loggedUser.getName()
+								+ " - Dodanie kierowcy do pojazdu: " + v));
 						addWindow.dispose();
 					}
 				});
@@ -344,7 +463,10 @@ public class CreateWindow {
 						Main.getCargoDao().create(c);
 						Main.eventLog.info("Dodano: " + c);
 						Calendar now = GregorianCalendar.getInstance();
-						Main.eventDao.create(new EventLog(now.getTime()+" INFO: " + Main.loggedUser.getName() + " - Dodanie ³adunku: " + c));
+						Main.eventDao.create(new EventLog(
+								now.getTime() + " INFO: " + Main.loggedUser.getName() + " - Dodanie ³adunku: " + c));
+						listofDoneModel.add(0,"Dodano: " + c);
+
 						addWindow.dispose();
 					}
 				});
@@ -379,9 +501,12 @@ public class CreateWindow {
 						c.setVehicle(null); // najpierw usun powiazanie
 						Main.getCargoDao().update(c);
 						Main.getCargoDao().delete(((Cargo) cargoBox.getSelectedItem()).getCargoID());
-						Main.eventLog.info("Usuniêto ³adunek " + c +" z bazy.");
+						Main.eventLog.info("Usuniêto ³adunek " + c + " z bazy.");
+						listofDoneModel.add(0,"Usuniêto ³adunek " + c + " z bazy.");
+
 						Calendar now = GregorianCalendar.getInstance();
-						Main.eventDao.create(new EventLog(now.getTime()+" INFO: " + Main.loggedUser.getName() + " - Usuwanie ³adunku: " + c));
+						Main.eventDao.create(new EventLog(
+								now.getTime() + " INFO: " + Main.loggedUser.getName() + " - Usuwanie ³adunku: " + c));
 						addWindow.dispose();
 					}
 				});
@@ -438,8 +563,11 @@ public class CreateWindow {
 								x, y, c);
 						Main.getWarehouseDao().create(d);
 						Main.eventLog.info("Dodano: " + d);
+						listofDoneModel.add(0,"Dodano: " + d);
+
 						Calendar now = GregorianCalendar.getInstance();
-						Main.eventDao.create(new EventLog(now.getTime()+" INFO: " + Main.loggedUser.getName() + " - Dodanie magazynu: " + d));
+						Main.eventDao.create(new EventLog(
+								now.getTime() + " INFO: " + Main.loggedUser.getName() + " - Dodanie magazynu: " + d));
 						addWindow.dispose();
 					}
 				});
@@ -476,9 +604,12 @@ public class CreateWindow {
 														// powiazanie
 						Main.getWarehouseDao().update(w);
 						Main.getWarehouseDao().delete(((Warehouse) warehouseBox.getSelectedItem()).getWarehouseID());
-						Main.eventLog.info("Usuniêto magazyn " + w +" z bazy.");
+						Main.eventLog.info("Usuniêto magazyn " + w + " z bazy.");
+						listofDoneModel.add(0,"Usuniêto magazyn " + w + " z bazy.");
+
 						Calendar now = GregorianCalendar.getInstance();
-						Main.eventDao.create(new EventLog(now.getTime()+" INFO: " + Main.loggedUser.getName() + " - Usuniêcie magazynu: " + w));
+						Main.eventDao.create(new EventLog(
+								now.getTime() + " INFO: " + Main.loggedUser.getName() + " - Usuniêcie magazynu: " + w));
 						addWindow.dispose();
 					}
 				});
@@ -514,17 +645,20 @@ public class CreateWindow {
 						v.addToCargo(c);
 						Main.getCargoDao().update(c);
 						Main.getVehicleDao().update(v);
-						int totalWeight=0;
-						for(Cargo ca : v.getCurrentCargo()) totalWeight += ca.getUnitWeight();
+						int totalWeight = 0;
+						for (Cargo ca : v.getCurrentCargo())
+							totalWeight += ca.getUnitWeight();
 						Calendar now = GregorianCalendar.getInstance();
 						Main.eventLog.info("Zmodyfikowano:\n" + v);
-						if(totalWeight > v.getCapacity())
-						{
+						listofDoneModel.add(0,"Zmodyfikowano:\n" + v);
+
+						if (totalWeight > v.getCapacity()) {
 							Main.eventLog.warning("Pojazd przeci¹¿ony!");
-							Main.eventDao.create(new EventLog(now.getTime()+" INFO: " + Main.loggedUser.getName() + " - Dodanie ³adunku do pojazdu: " + v + "; POJAZD PRZECI¥¯ONY!"));
-						}
-						else
-							Main.eventDao.create(new EventLog(now.getTime()+" WARN: " + Main.loggedUser.getName() + " - Przeci¹¿enie pojazdu w wyniku dodania ³adunku: " + v));
+							Main.eventDao.create(new EventLog(now.getTime() + " INFO: " + Main.loggedUser.getName()
+									+ " - Dodanie ³adunku do pojazdu: " + v + "; POJAZD PRZECI¥¯ONY!"));
+						} else
+							Main.eventDao.create(new EventLog(now.getTime() + " WARN: " + Main.loggedUser.getName()
+									+ " - Przeci¹¿enie pojazdu w wyniku dodania ³adunku: " + v));
 						addWindow.dispose();
 					}
 				});
@@ -556,8 +690,11 @@ public class CreateWindow {
 						Transport t = new Transport(w);
 						Main.getTransportDao().create(t);
 						Main.eventLog.info("Dodano zlecenie:" + t);
+						listofDoneModel.add(0,"Dodano zlecenie:" + t);
+
 						Calendar now = GregorianCalendar.getInstance();
-						Main.eventDao.create(new EventLog(now.getTime()+" INFO: " + Main.loggedUser.getName() + " - Dodanie zlecenia: " + t));
+						Main.eventDao.create(new EventLog(
+								now.getTime() + " INFO: " + Main.loggedUser.getName() + " - Dodanie zlecenia: " + t));
 						addWindow.dispose();
 					}
 				});
@@ -591,15 +728,20 @@ public class CreateWindow {
 						Transport t = (Transport) transportBox.getSelectedItem();
 						Vehicle v = (Vehicle) vehicleBox.getSelectedItem();
 						v.setTransport(t);
+						t.setExecutor(v);
 						v.setArrivalListener(t.getDestination());
 						t.getDestination().addToTransports(t);
-						Main.transportDao.current.addToTransports(t);
+						Main.transportDao.current.add(t);
+						Main.getTransportDao().getList().remove(t);
 						Main.getTransportDao().update(t);
 						Main.getVehicleDao().update(v);
 						Main.eventLog.info("Dodano:\n" + v);
+						listofDoneModel.add(0,"Dodano:\n" + v);
+
 						Calendar now = GregorianCalendar.getInstance();
-						Main.eventDao.create(new EventLog(now.getTime()+" INFO: " + Main.loggedUser.getName() + " - Zlecenie transportu: " + t + "; " + v));
-						
+						Main.eventDao.create(new EventLog(now.getTime() + " INFO: " + Main.loggedUser.getName()
+								+ " - Zlecenie transportu: " + t + "; " + v));
+
 						addWindow.dispose();
 					}
 				});
@@ -613,4 +755,128 @@ public class CreateWindow {
 		buttonPanel.add(addNewTransport);
 	}
 
+	public static void addUser() {
+		JButton addNewUser = new JButton("+ U¿ytkownik");
+		addNewUser.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JPanel panel = new JPanel(new GridLayout());
+				JComboBox<Role> roleBox = new JComboBox<Role>(
+						(Role[]) Main.roleDao.getList().toArray(new Role[Main.roleDao.getList().size()]));
+				panel.add(roleBox);
+				JTextField textFieldUsername = new JTextField("Login", 15);
+				panel.add(textFieldUsername);
+				JTextField textFieldPassword = new JTextField("Has³o", 15);
+				panel.add(textFieldPassword);
+				JFrame addWindow = new JFrame("Stwórz u¿ytkownika");
+				JButton bt = new JButton("ZatwierdŸ");
+				bt.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						Role r = (Role) roleBox.getSelectedItem();
+						User u = new User(textFieldUsername.getText(), textFieldPassword.getText(), r);
+						Main.userDao.create(u);
+						Main.eventLog.info("Dodano: " + u);
+						listofDoneModel.add(0,"Dodano: " + u);
+
+						Calendar now = GregorianCalendar.getInstance();
+						Main.eventDao.create(new EventLog(
+								now.getTime() + " INFO: " + Main.loggedUser.getName() + " - dodano u¿ytkownika: " + u));
+
+						addWindow.dispose();
+					}
+				});
+
+				panel.add(bt, BorderLayout.EAST);
+				addWindow.getContentPane().add(panel);
+				addWindow.pack();
+				addWindow.setVisible(true);
+			}
+		});
+		buttonPanel.add(addNewUser);
+	}
+
+	public static void removeUserButton() {
+		JButton removeUser = new JButton("- U¿ytkownik");
+		removeUser.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JPanel panel = new JPanel(new BorderLayout());
+				JComboBox<User> UserBox = new JComboBox<User>(
+						(User[]) Main.userDao.getList().toArray(new User[Main.userDao.getList().size()]));
+				panel.add(UserBox);
+
+				JFrame addWindow = new JFrame("Usuñ u¿ytkownika");
+				JButton bt = new JButton("ZatwierdŸ");
+				bt.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						User u = ((User) UserBox.getSelectedItem());
+						u.setRole(null);
+						Main.userDao.delete(u);
+						Main.eventLog.info("Usuniêto u¿ytkownika " + u + " z bazy.");
+						listofDoneModel.add(0,"Usuniêto u¿ytkownika " + u + " z bazy.");
+
+						Calendar now = GregorianCalendar.getInstance();
+						Main.eventDao.create(new EventLog(now.getTime() + " INFO: " + Main.loggedUser.getName()
+								+ " - Usuniêcie u¿ytkownika: " + u));
+						addWindow.dispose();
+					}
+				});
+				panel.add(bt, BorderLayout.EAST);
+				addWindow.getContentPane().add(panel);
+				addWindow.pack();
+				addWindow.setVisible(true);
+			}
+		});
+		buttonPanel.add(removeUser);
+	}
+	
+	public static void showTransportHistoryButton() {
+		JButton removeUser = new JButton("Historia transportu");
+		removeUser.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JPanel panel = new JPanel(new BorderLayout());
+				DefaultListModel<String> listModel = new DefaultListModel<String>();
+				JList<String> listBox= new JList<String>(listModel);
+				panel.add(listBox);
+				for(Transport t : Main.getTransportDao().history)listModel.add(0,t.toString());
+				
+				JFrame addWindow = new JFrame("Przegl¹d wykonanych transportów");
+			
+				addWindow.getContentPane().add(panel);
+				addWindow.pack();
+				addWindow.setVisible(true);
+			}
+		});
+		buttonPanel.add(removeUser);
+	}
+	public static void selectAllButton() {
+		JButton removeUser = new JButton("Poka¿ zasoby");
+		removeUser.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JPanel panel = new JPanel(new BorderLayout());
+				
+				DefaultListModel<String> listModel = new DefaultListModel<String>();
+				JList<String> listBox= new JList<String>(listModel);
+				panel.add(listBox);
+				listModel.add(0,"\t\t*****POJAZDY*****");
+				for(Vehicle v : Main.getVehicleDao().getList())listModel.add(0,v.toString());
+				listModel.add(0,"\t\t*****KIEROWCY*****");
+				for(Driver d : Main.getDriverDao().getList())listModel.add(0,d.toString());
+				listModel.add(0,"\t\t*****MAGAZYNY*****");
+				for(Warehouse w : Main.getWarehouseDao().getList())listModel.add(0,w.toString());
+				listModel.add(0,"\t\t*****£ADUNEK*****");
+				for(Cargo c : Main.getCargoDao().getList())listModel.add(0,c.toString());
+				
+				JFrame addWindow = new JFrame("Przegl¹d zasobów firmy");
+				addWindow.getContentPane().add(panel);
+				addWindow.pack();
+				addWindow.setVisible(true);
+			}
+		});
+		buttonPanel.add(removeUser);
+	}
 }

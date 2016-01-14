@@ -22,8 +22,6 @@ public class Cargo {
 	public Cargo(String name, int weight) {
 		this.setName(name);
 		this.setUnitWeight(weight);
-//		this.setVehicle(new HashSet<Vehicle>());
-
 	}
 
 	public Cargo(String name, int weight, HashSet<Vehicle> vs) {

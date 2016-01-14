@@ -16,7 +16,7 @@
         </property>
         <set name="warehouses" table="COUNTRY" inverse="false" lazy="false" cascade="all" access="field">
             <key>
-                <column name="warehuseID" />
+                <column name="ID" />
             </key>
             <one-to-many class="pl.edu.wat.wcy.model.entities.Warehouse" />
         </set>

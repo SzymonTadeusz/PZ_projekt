@@ -15,6 +15,7 @@ import java.util.logging.SimpleFormatter;
 import javax.persistence.PersistenceException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -45,7 +46,14 @@ public class Main {
 
 	
 	public static void main(String[] args) {
+		JFrame helloWindow = new JFrame("Szymon Muszyński - projekt PZ");
+		helloWindow.setSize(400, 80);
+		helloWindow.setLocation(450, 350);
+		helloWindow.getContentPane().add(new JLabel("  Trwa ładowanie danych z bazy. Proszę czekać..."));
+		helloWindow.setVisible(true);
+		
 		addUsers();
+		helloWindow.dispose();
 		logInForm();
 		
 		try {
@@ -101,6 +109,7 @@ public class Main {
 					Cargo c = (Cargo) cargoDao.getList().get(vehicleDao.getList().indexOf(v));
 					d.setDriverOf(v);
 					c.addToVehicles(v);
+					v.addToCargo(c);
 					v.setCurrentDriver(d);
 				}
 
@@ -226,7 +235,7 @@ public class Main {
 	public static void addVehicles() {
 		Truck tir1 = new Truck("LU12345", true, 1000, 195, 175);
 		Airplane sam = new Airplane("Boeing 363", 10000, 685, 25);
-		Truck tir2 = new Truck("WB99102", true, 1000, 100, 100);
+		Truck tir2 = new Truck("WB99102", true, 1000, 20, 420);
 		Truck tir3 = new Truck("NO1503C", true, 5000, 505, 195);
 		Airplane sam2 = new Airplane("Airbus 150", 10000, 440, 500);
 		Truck tir4 = new Truck("CT13021", true, 1000, 515, 195);

@@ -22,6 +22,11 @@ public class User {
 		this.name = name;
 		this.password = password;
 	}
+	
+	@Override
+	public String toString() {
+		return ("User: " + this.name + ", has³o: " + this.password);
+	}
 
 	public int getUserID() {
 		return userID;

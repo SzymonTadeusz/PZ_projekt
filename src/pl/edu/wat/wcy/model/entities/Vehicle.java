@@ -8,10 +8,12 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import pl.edu.wat.wcy.events.Arrivable;
 import pl.edu.wat.wcy.events.VehicleArrivedEvent;
+import pl.edu.wat.wcy.view.CreateWindow;
 
 public abstract class Vehicle implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -24,8 +26,8 @@ public abstract class Vehicle implements Serializable {
 	private Transport transport;
 	private Arrivable listener;
 	public Image icon;
-	protected JLabel label;
-
+	public JLabel label;
+	
 	public Vehicle() {
 		super();
 	}
@@ -35,7 +37,7 @@ public abstract class Vehicle implements Serializable {
 		this.setxCoord(x);
 		this.setyCoord(y);
 	}
-
+	
 	public Vehicle(int capacity, int x, int y, Transport t) {
 		this.setCapacity(capacity);
 		this.setxCoord(x);
@@ -43,6 +45,15 @@ public abstract class Vehicle implements Serializable {
 		this.setTransport(t);
 	}
 
+	public void setIcon(Image img, String text){
+		label = new JLabel(new ImageIcon(img));
+		CreateWindow.getMapPanel().add(label);
+		label.setSize(24, 24);
+		label.setVisible(true);
+	}
+	
+	public String toTooltip(){return null;}
+	
 	@Override
 	public String toString() {
 		String cargo = " ";

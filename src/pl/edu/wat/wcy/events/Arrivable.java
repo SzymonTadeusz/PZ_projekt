@@ -19,8 +19,8 @@ public interface Arrivable {
 		Main.eventLog.info("Roz³adowano: " + cargo);
 		Calendar now = GregorianCalendar.getInstance();
 		Main.eventDao.create(new EventLog(now.getTime()+"INFO: " + Main.loggedUser.getName() + " - Dojecha³ pojazd " + e.getVehicleArrived()+ ". Zalogowany user: "+Main.loggedUser.getName()));
-		Main.getTransportDao().current.removeFromTransports(e.getVehicleArrived().getTransport());
-		Main.getTransportDao().history.addToTH(e.getVehicleArrived().getTransport());
+		Main.getTransportDao().current.remove(e.getVehicleArrived().getTransport());
+		Main.getTransportDao().history.add(e.getVehicleArrived().getTransport());
 		e.getVehicleArrived().setCurrentCargo(null);
 		e.getVehicleArrived().setArrivalListener(null);
 		e.getVehicleArrived().setTransport(null);

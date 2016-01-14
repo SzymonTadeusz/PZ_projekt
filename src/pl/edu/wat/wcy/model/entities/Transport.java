@@ -4,6 +4,7 @@ public class Transport {
 
 	private int transportID;
 	private Warehouse destination;
+	private Vehicle executor;
 	
 	public Transport(){}
 	
@@ -14,7 +15,7 @@ public class Transport {
 	
 	@Override
 	public String toString() {
-		return ("Transport " + transportID+ " do " + getDestination());
+		return ("Transport " + transportID+ " do " + this.getDestination() + "\nWYKONAWCA: " + this.executor);
 	};
 	
 	public Warehouse getDestination() {
@@ -28,6 +29,14 @@ public class Transport {
 	}
 	public void setTransportID(int transportID) {
 		this.transportID = transportID;
+	}
+
+	public Vehicle getExecutor() {
+		return executor;
+	}
+
+	public void setExecutor(Vehicle executor) {
+		this.executor = executor;
 	}
 	
 }

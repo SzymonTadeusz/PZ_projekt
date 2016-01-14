@@ -8,6 +8,7 @@ import java.util.GregorianCalendar;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import pl.edu.wat.wcy.main.Main;
 import pl.edu.wat.wcy.model.entities.EventLog;
@@ -28,14 +29,14 @@ public class VehicleDamagedEvent {
 					Main.eventDao.create(new EventLog(now.getTime()+" WARN: " + Main.loggedUser.getName() + " - VehicleDamaged - nie za³adowano ikony. Zalogowany user: "+Main.loggedUser.getName()));
 				}
 				if(imageDisabled!=null)
-				vehicleDamaged.icon = imageDisabled;
+				vehicleDamaged.label.setIcon(new ImageIcon(imageDisabled));
 				Random rand = new Random();
 				int delay = rand.nextInt(5000)+3000;
 				try {
 					Thread.sleep(delay);
 				} catch (InterruptedException e){}
 				vehicleDamaged.setAbleToWork(true);
-				vehicleDamaged.icon = imageAbled;
+				vehicleDamaged.label.setIcon(new ImageIcon(imageAbled));
 			}
 		};
 		thread.start();
